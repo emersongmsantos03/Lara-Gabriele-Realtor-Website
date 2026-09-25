@@ -22,7 +22,7 @@ export default function Areas() {
             </div>
             <Link
               href="/areas"
-              className="group inline-flex items-center gap-1.5 text-sm font-medium text-ink border-b border-ink/30 pb-0.5 hover:border-ink self-start md:self-auto"
+              className="group inline-flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-ink border-b border-ink/30 pb-0.5 hover:border-ink self-start md:self-auto"
             >
               See all {areas.length} neighborhoods
               <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />

@@ -80,8 +80,8 @@ export default function MarketSnapshot({
 
         <dl className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-px bg-line rounded-2xl overflow-hidden border border-line">
           {tiles.map((t, i) => (
-            <Reveal key={t.label} delay={i * 80} className="h-full bg-cream p-6 sm:p-8">
-              <dt className="text-xs tracking-[0.15em] uppercase text-ink-soft">{t.label}</dt>
+            <Reveal key={t.label} delay={i * 80} className="h-full bg-cream p-5 sm:p-8">
+              <dt className="text-[11px] sm:text-xs tracking-[0.12em] sm:tracking-[0.15em] uppercase text-ink-soft">{t.label}</dt>
               <dd className="mt-3 font-display text-3xl sm:text-4xl md:text-5xl tabular-nums">
                 {t.value}
                 {t.extra}

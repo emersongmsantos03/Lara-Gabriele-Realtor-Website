@@ -80,7 +80,7 @@ export default function NavBar() {
         </div>
 
         <button
-          className={`lg:hidden transition-colors ${solid ? "text-ink" : "text-cream"}`}
+          className={`lg:hidden -mr-2 w-11 h-11 inline-flex items-center justify-center transition-colors ${solid ? "text-ink" : "text-cream"}`}
           onClick={() => setOpen((v) => !v)}
           aria-label="Toggle menu"
           aria-expanded={open}
