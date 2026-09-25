@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Pacific Friendly Realty brand: navy, sea teal, sunset orange on sand. */
+  --cream: #f8f4ec;
+  --cream-deep: #eee6d6;
+  --ink: #0e2b40;
+  --ink-soft: #4a6273;
+  --gold: #c9671f;
+  --gold-light: #f4a259;
+  --sea: #1b9aaa;
+  --sea-light: #7fd1d9;
+  --clay: #b8452f;
+  --line: rgba(14, 43, 64, 0.12);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-cream: var(--cream);
+  --color-cream-deep: var(--cream-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-sea: var(--sea);
+  --color-sea-light: var(--sea-light);
+  --color-clay: var(--clay);
+  --color-line: var(--line);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  /* Keeps anchor targets clear of the fixed nav bar. */
+  scroll-padding-top: 88px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--cream);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+/* Neighborhood map (Leaflet) */
+.area-map .leaflet-container {
+  background: var(--cream-deep);
+  font-family: var(--font-body);
+}
+
+.area-map .leaflet-tile-pane {
+  filter: saturate(0.35) sepia(0.12) brightness(1.02);
+}
+
+.area-map .leaflet-bar a {
+  color: var(--ink);
+}
+
+.map-pin {
+  background: transparent;
+  border: 0;
+}
+
+.map-pin span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  background: var(--gold);
+  border: 3px solid var(--cream);
+  box-shadow: 0 2px 8px rgba(14, 43, 64, 0.35);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.map-pin:hover span,
+.map-pin:focus-visible span,
+.map-pin.is-active span {
+  background: var(--ink);
+  transform: scale(1.3);
+}
+
+.map-pin.is-active span {
+  box-shadow: 0 0 0 6px rgba(201, 103, 31, 0.35), 0 2px 8px rgba(14, 43, 64, 0.35);
+}
+
+.map-pin:focus-visible {
+  outline: none;
+}
+
+.map-tip {
+  background: var(--ink);
+  color: var(--cream);
+  border: 0;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  box-shadow: 0 4px 14px rgba(14, 43, 64, 0.3);
+}
+
+.map-tip.leaflet-tooltip-top::before {
+  border-top-color: var(--ink);
 }
