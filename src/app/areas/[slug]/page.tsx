@@ -39,7 +39,7 @@ export async function generateMetadata(
   if (!area) return {};
 
   const title = `${area.name} Realtor & Homes for Sale`;
-  const description = `Buying or selling in ${area.name}, CA? Lara Gabriele is a San Diego REALTOR® with 20+ years of local experience. ${area.blurb} Free home valuations.`;
+  const description = `Buying or selling in ${area.name}, CA? Lara Gabriele is a San Diego REALTOR® and former senior mortgage underwriter. ${area.blurb} Free home valuations.`;
 
   return {
     title,
@@ -116,7 +116,7 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
       <NavBar />
       <main className="flex-1">
         {/* Hero */}
-        <section id="top" className="relative min-h-[78svh] flex items-end overflow-hidden bg-ink">
+        <section id="top" className="relative min-h-[60svh] flex items-end overflow-hidden bg-ink">
           {area.image ? (
             <Image
               src={area.image}
@@ -138,8 +138,13 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/20" />
           <div className="absolute inset-0 bg-gradient-to-r from-ink/60 via-ink/10 to-transparent" />
+          {area.image && area.imageCredit && (
+            <p className="absolute z-10 bottom-3 right-4 text-[10px] text-cream/50">
+              {area.imageCredit}
+            </p>
+          )}
 
-          <div className="relative z-10 w-full mx-auto max-w-7xl px-6 lg:px-10 pt-32 pb-16 md:pb-24">
+          <div className="relative z-10 w-full mx-auto max-w-7xl px-6 lg:px-10 pt-32 pb-12 md:pb-16">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex flex-wrap items-center gap-1.5 text-xs text-cream/60">
                 <li>
@@ -153,47 +158,47 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
                 <li aria-current="page" className="text-cream/90">{area.name}</li>
               </ol>
             </nav>
-            <p className="text-gold-light tracking-[0.3em] text-xs md:text-sm uppercase mb-5">
-              {area.region} &middot; {area.tagline}
+            <p className="text-gold-light tracking-[0.25em] text-xs uppercase mb-3">
+              {area.region}
             </p>
-            <h1 className="font-display text-cream text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl max-w-4xl text-balance">
+            <h1 className="font-display text-cream text-4xl md:text-5xl leading-tight max-w-3xl text-balance">
               {area.name} Real Estate &amp; Homes for Sale
             </h1>
-            <p className="mt-6 max-w-xl text-cream/85 text-base md:text-lg leading-relaxed">
+            <p className="mt-4 max-w-xl text-cream/80 leading-relaxed">
               {area.blurb} Guided by Lara Gabriele, your local San Diego
               REALTOR&reg;.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <a
                 href="#contact"
-                className="inline-flex items-center rounded-full bg-gold text-ink text-sm font-medium px-7 py-3.5 hover:bg-gold-light transition-colors"
+                className="inline-flex items-center rounded-full bg-gold text-ink text-sm font-medium px-6 py-3 hover:bg-gold-light transition-colors"
               >
-                Talk to Lara About {area.name}
+                Talk to Lara
               </a>
               <a
                 href="#valuation"
-                className="inline-flex items-center rounded-full border border-cream/40 text-cream text-sm font-medium px-7 py-3.5 hover:bg-cream/10 transition-colors"
+                className="inline-flex items-center rounded-full border border-cream/40 text-cream text-sm font-medium px-6 py-3 hover:bg-cream/10 transition-colors"
               >
-                What&rsquo;s My Home Worth?
+                What&rsquo;s my home worth?
               </a>
             </div>
           </div>
         </section>
 
         {/* Overview */}
-        <section className="py-20 md:py-28">
-          <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-14">
+        <section className="py-16 md:py-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-14">
             <div className="lg:col-span-7">
               <Reveal>
-                <p className="text-gold text-xs md:text-sm tracking-[0.25em] uppercase mb-4">
+                <p className="text-gold text-xs tracking-[0.25em] uppercase mb-3">
                   Living in {area.name}
                 </p>
-                <h2 className="font-display text-3xl md:text-5xl leading-tight text-balance">
+                <h2 className="font-display text-3xl md:text-4xl leading-tight text-balance">
                   What it&rsquo;s really like to call {area.name} home.
                 </h2>
               </Reveal>
               <Reveal delay={80}>
-                <div className="mt-7 space-y-5 text-ink-soft leading-relaxed text-lg">
+                <div className="mt-5 space-y-4 text-ink-soft leading-relaxed md:text-lg">
                   {area.description.map((p) => (
                     <p key={p.slice(0, 24)}>{p}</p>
                   ))}
@@ -201,7 +206,7 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
               </Reveal>
 
               <Reveal delay={140}>
-                <div className="mt-12">
+                <div className="mt-10">
                   <div className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-gold">
                     <Sparkles size={14} />
                     Why people love {area.name}
@@ -223,8 +228,8 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
 
             <aside className="lg:col-span-5">
               <Reveal delay={100}>
-                <div className="rounded-2xl border border-line bg-cream-deep/50 p-7 sm:p-8 space-y-7 lg:sticky lg:top-28">
-                  <h2 className="font-display text-2xl">{area.name} at a glance</h2>
+                <div className="rounded-2xl border border-line bg-cream-deep/50 p-6 sm:p-7 space-y-6 lg:sticky lg:top-28">
+                  <h2 className="font-display text-xl">{area.name} at a glance</h2>
 
                   <div>
                     <div className="flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-gold">
@@ -270,7 +275,7 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
                     </div>
                   )}
 
-                  <div className="rounded-xl overflow-hidden border border-line h-48">
+                  <div className="rounded-xl overflow-hidden border border-line h-40">
                     <iframe
                       title={`Map of ${area.name}, San Diego County`}
                       src={mapSrc(area.coords)}
@@ -299,36 +304,33 @@ export default async function AreaPage(props: PageProps<"/areas/[slug]">) {
 
         {/* Nearby */}
         {nearby.length > 0 && (
-          <section className="py-20 md:py-28">
+          <section className="pb-16 md:pb-20">
             <div className="mx-auto max-w-7xl px-6 lg:px-10">
               <Reveal>
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                  <h2 className="font-display text-3xl md:text-4xl">
+                  <h2 className="font-display text-2xl md:text-3xl">
                     Also consider nearby
                   </h2>
                   <Link
                     href="/areas"
-                    className="group inline-flex items-center gap-1.5 text-sm font-medium border-b border-ink/30 pb-0.5 hover:border-ink self-start"
+                    className="group inline-flex items-center gap-1.5 text-sm font-medium hover:text-gold transition-colors self-start"
                   >
                     All neighborhoods
                     <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
                   </Link>
                 </div>
               </Reveal>
-              <div className="mt-10 grid md:grid-cols-3 gap-6">
+              <div className="mt-6 grid md:grid-cols-3 gap-3">
                 {nearby.map((n, i) => (
                   <Reveal key={n.slug} delay={i * 80}>
                     <Link
                       href={`/areas/${n.slug}`}
-                      className="group block h-full rounded-2xl border border-line bg-cream-deep/40 p-7 hover:border-gold/60 hover:shadow-xl hover:shadow-ink/5 hover:-translate-y-1 transition-all duration-300"
+                      className="group block h-full rounded-2xl border border-line bg-cream-deep/40 p-5 hover:border-gold/50 hover:bg-cream-deep/70 transition-colors"
                     >
-                      <p className="text-xs tracking-[0.2em] uppercase text-gold">
-                        {n.region}
-                      </p>
-                      <h3 className="mt-3 font-display text-2xl group-hover:text-gold transition-colors">
+                      <h3 className="font-display text-xl group-hover:text-gold transition-colors">
                         {n.name}
                       </h3>
-                      <p className="mt-2 text-sm text-ink-soft leading-relaxed">{n.blurb}</p>
+                      <p className="mt-1 text-sm text-ink-soft leading-relaxed">{n.blurb}</p>
                     </Link>
                   </Reveal>
                 ))}

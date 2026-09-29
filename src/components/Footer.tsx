@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { areas } from "@/lib/areas";
+import { areas, featuredAreas } from "@/lib/areas";
 import { site } from "@/lib/site";
 import { ArrowUpRight } from "lucide-react";
 
@@ -39,7 +39,7 @@ function EqualHousingIcon() {
 export default function Footer() {
   return (
     <footer className="bg-ink text-cream/70 border-t border-cream/10">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-14">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 py-12">
         <div className="grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
             <Image
@@ -106,7 +106,7 @@ export default function Footer() {
               </Link>
             </p>
             <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-2.5 text-sm">
-              {areas.map((a) => (
+              {featuredAreas.map((a) => (
                 <li key={a.slug}>
                   <Link
                     href={`/areas/${a.slug}`}
@@ -116,20 +116,32 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <Link href="/areas" className="text-gold-light hover:text-cream transition-colors">
+                  All {areas.length} neighborhoods →
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-cream/10 flex flex-col md:flex-row gap-3 md:gap-6 text-xs">
+        <div className="mt-10 pt-6 border-t border-cream/10 flex flex-col md:flex-row gap-3 md:gap-6 text-xs">
           <span>© {new Date().getFullYear()} Pacific Friendly Realty. All rights reserved.</span>
           <span>
-            Lara Gabriele, REALTOR&reg; — eXp Realty of California, Inc.
-            {site.dreLicense && <> &middot; DRE #{site.dreLicense}</>}
+            Lara Gabriele, REALTOR&reg; &middot; CA DRE #{site.dreLicense} &middot;{" "}
+            {site.brokerageLegal}, CA DRE #{site.brokerageDre}
           </span>
           <span className="inline-flex items-center gap-1.5">
             <EqualHousingIcon />
             Equal Housing Opportunity
           </span>
+          {areas
+            .filter((a) => a.imageCredit)
+            .map((a) => (
+              <span key={a.slug} className="text-cream/40">
+                {a.imageCredit}
+              </span>
+            ))}
         </div>
       </div>
     </footer>

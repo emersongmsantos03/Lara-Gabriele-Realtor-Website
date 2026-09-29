@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { ArrowDown } from "lucide-react";
-import { site } from "@/lib/site";
 
 export default function Hero() {
   return (
@@ -35,16 +34,16 @@ export default function Hero() {
         <div className="grid lg:grid-cols-12 gap-10 items-end w-full">
           <div className="lg:col-span-8">
             <p className="text-gold-light tracking-[0.3em] text-xs md:text-sm uppercase mb-5">
-              San Diego County
+              San Marcos &middot; Poway &middot; San Diego County
             </p>
-            <h1 className="font-display text-cream text-[2.6rem] leading-[1.03] sm:text-6xl md:text-7xl max-w-3xl text-balance">
+            <h1 className="font-display text-cream text-[2.5rem] leading-[1.05] sm:text-5xl md:text-6xl max-w-3xl text-balance">
               Your San Diego home story{" "}
               <em className="text-gold-light font-light">starts here.</em>
             </h1>
             <p className="mt-6 max-w-lg text-cream/85 text-base md:text-lg leading-relaxed">
-              I&rsquo;m Lara Gabriele, a San Diego REALTOR&reg; helping you buy
-              and sell from La Jolla to Carlsbad &mdash; with honesty and
-              twenty years of local know-how.
+              I&rsquo;m Lara Gabriele &mdash; a former senior mortgage
+              underwriter turned REALTOR&reg;. I know what lenders look for, so
+              your offer and your financing hold up.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-4">
@@ -62,22 +61,13 @@ export default function Hero() {
               </a>
             </div>
 
-            <div className="mt-10 flex items-center gap-5">
-              <Image
-                src="/images/exp-luxury-logo-light.png"
-                alt="eXp Realty Luxury"
-                width={871}
-                height={252}
-                className="h-7 w-auto opacity-90"
-              />
-              <span className="h-6 w-px bg-cream/25" />
-              <a
-                href={site.phoneHref}
-                className="text-sm text-cream/80 hover:text-cream transition-colors"
-              >
-                {site.phone}
-              </a>
-            </div>
+            <Image
+              src="/images/exp-luxury-logo-light.png"
+              alt="eXp Realty Luxury"
+              width={871}
+              height={252}
+              className="mt-10 h-7 w-auto opacity-90"
+            />
           </div>
 
           {/* Personal card: people hire a person, not a logo. */}

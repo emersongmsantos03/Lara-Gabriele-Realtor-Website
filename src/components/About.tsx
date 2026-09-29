@@ -1,24 +1,23 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
-import { areas } from "@/lib/areas";
 
 const facts = [
-  { value: "20+", label: "years in real estate" },
-  { value: String(areas.length), label: "San Diego communities" },
+  { value: "15", label: "years as a mortgage underwriter" },
+  { value: "2009", label: "selling homes since" },
   { value: "1:1", label: "you work with me directly" },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="py-24 md:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <section id="about" className="py-20 md:py-24">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         <Reveal className="lg:col-span-5">
-          <div className="relative aspect-[4/5] w-full max-w-md mx-auto lg:mx-0 rounded-3xl overflow-hidden">
+          <div className="relative aspect-[4/3] sm:aspect-[4/5] w-full max-w-sm mx-auto lg:mx-0 rounded-3xl overflow-hidden">
             <Image
               src="/images/lara-bw.jpg"
               alt="Lara Gabriele, San Diego REALTOR®"
               fill
-              className="object-cover"
+              className="object-cover object-[50%_25%]"
               sizes="(min-width: 1024px) 40vw, 90vw"
             />
           </div>
@@ -26,26 +25,31 @@ export default function About() {
 
         <div className="lg:col-span-7">
           <Reveal>
-            <h2 className="font-display text-4xl md:text-6xl leading-[1.05] text-balance">
-              Buying or selling a home is personal. I treat it that way.
+            <h2 className="font-display text-3xl md:text-5xl leading-[1.1] text-balance">
+              I spent 15 years on the lender&rsquo;s side of the table.
             </h2>
-            <div className="mt-8 space-y-5 text-ink-soft text-lg leading-relaxed max-w-xl">
+            <div className="mt-6 space-y-4 text-ink-soft md:text-lg leading-relaxed max-w-xl">
               <p>
-                For more than twenty years I&rsquo;ve helped San Diego families
-                move with confidence — telling the truth about value,
-                negotiating like it&rsquo;s my own money, and handling every
-                detail so you don&rsquo;t have to.
+                Before I became a REALTOR&reg; in 2009, I was a senior mortgage
+                underwriter. I know which offers will actually close, why deals
+                fall apart in escrow, and how to structure financing so yours
+                doesn&rsquo;t.
+              </p>
+              <p>
+                Today I help buyers and sellers from my home base in San Marcos,
+                across Poway, North County and the coast &mdash; with honest
+                advice and a lot of attention to detail.
               </p>
               <p>No assistants, no call centers. You call, I answer.</p>
             </div>
-            <p className="mt-8 font-display italic text-3xl text-gold">Lara</p>
+            <p className="mt-6 font-display italic text-2xl text-gold">Lara</p>
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="mt-12 grid grid-cols-3 gap-6 max-w-xl border-t border-line pt-8">
+            <div className="mt-10 grid grid-cols-3 gap-6 max-w-xl border-t border-line pt-6">
               {facts.map((f) => (
                 <div key={f.label}>
-                  <div className="font-display text-3xl md:text-4xl text-ink">{f.value}</div>
+                  <div className="font-display text-2xl md:text-3xl text-ink">{f.value}</div>
                   <div className="mt-1 text-sm text-ink-soft">{f.label}</div>
                 </div>
               ))}

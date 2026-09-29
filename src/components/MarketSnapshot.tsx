@@ -47,7 +47,7 @@ export default function MarketSnapshot({
   ];
 
   return (
-    <section id="market" className="py-20 md:py-28">
+    <section id="market" className="py-16 md:py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         {data.sample && (
           <p className="mb-8 rounded-xl border border-dashed border-clay/60 bg-clay/5 px-4 py-3 text-sm text-clay">
@@ -59,10 +59,10 @@ export default function MarketSnapshot({
         <Reveal>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
             <div>
-              <p className="text-gold text-xs md:text-sm tracking-[0.25em] uppercase mb-4">
+              <p className="text-gold text-xs tracking-[0.25em] uppercase mb-3">
                 Market update &middot; {monthLabel}
               </p>
-              <h2 className="font-display text-3xl md:text-5xl leading-tight text-balance max-w-2xl">
+              <h2 className="font-display text-3xl md:text-4xl leading-tight text-balance max-w-2xl">
                 The {area} market, right now.
               </h2>
             </div>
@@ -78,11 +78,11 @@ export default function MarketSnapshot({
           </div>
         </Reveal>
 
-        <dl className="mt-12 grid grid-cols-2 lg:grid-cols-4 gap-px bg-line rounded-2xl overflow-hidden border border-line">
+        <dl className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-line rounded-2xl overflow-hidden border border-line">
           {tiles.map((t, i) => (
-            <Reveal key={t.label} delay={i * 80} className="h-full bg-cream p-5 sm:p-8">
+            <Reveal key={t.label} delay={i * 80} className="h-full bg-cream p-5 sm:p-6">
               <dt className="text-[11px] sm:text-xs tracking-[0.12em] sm:tracking-[0.15em] uppercase text-ink-soft">{t.label}</dt>
-              <dd className="mt-3 font-display text-3xl sm:text-4xl md:text-5xl tabular-nums">
+              <dd className="mt-2 font-display text-2xl sm:text-3xl md:text-4xl tabular-nums">
                 {t.value}
                 {t.extra}
               </dd>
@@ -95,7 +95,7 @@ export default function MarketSnapshot({
             <figcaption className="md:col-span-3 text-xs tracking-[0.2em] uppercase text-gold pt-1">
               Lara&rsquo;s take
             </figcaption>
-            <blockquote className="md:col-span-9 font-display text-xl md:text-2xl leading-snug text-ink">
+            <blockquote className="md:col-span-9 font-display text-lg md:text-xl leading-snug text-ink">
               &ldquo;{data.note}&rdquo;
             </blockquote>
           </figure>

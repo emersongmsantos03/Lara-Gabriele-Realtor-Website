@@ -4,6 +4,9 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowUpRight, MapPin, X } from "lucide-react";
+// Imported here, not in AreaMapCanvas: CSS inside a lazily loaded chunk can go
+// missing after client navigation or hot reload, which scatters the tiles.
+import "leaflet/dist/leaflet.css";
 import type { Region } from "@/lib/areas";
 import type { MapPoint } from "@/lib/map-points";
 

@@ -3,14 +3,16 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
+import { site } from "@/lib/site";
 
 const links = [
   { href: "/#about", label: "About" },
-  { href: "/#sell", label: "Sell" },
-  { href: "/#buy", label: "Buy" },
+  { href: "/#services", label: "Buy & Sell" },
+  { href: "/#off-market", label: "Off-Market" },
+  { href: "/#reviews", label: "Reviews" },
   { href: "/areas", label: "Neighborhoods" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/guides", label: "Guides" },
 ];
 
 export default function NavBar() {
@@ -33,24 +35,36 @@ export default function NavBar() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-10 h-20 flex items-center justify-between">
-        <Link href="/" className="relative block h-11 sm:h-12 w-[205px] sm:w-[235px] shrink-0" aria-label="Pacific Friendly Realty — Lara Gabriele, REALTOR® — home">
-          <Image
-            src="/images/logo-light.png"
-            alt="Pacific Friendly Realty — Lara Gabriele, REALTOR®"
-            fill
-            priority
-            sizes="235px"
-            className={`object-contain object-left transition-opacity duration-300 ${solid ? "opacity-0" : "opacity-100"}`}
-          />
-          <Image
-            src="/images/logo.png"
-            alt=""
-            fill
-            priority
-            sizes="235px"
-            className={`object-contain object-left transition-opacity duration-300 ${solid ? "opacity-100" : "opacity-0"}`}
-          />
-        </Link>
+        <div className="relative shrink-0">
+          <Link href="/" className="relative block h-10 sm:h-11 w-[195px] sm:w-[220px]" aria-label="Pacific Friendly Realty — Lara Gabriele, REALTOR® — home">
+            <Image
+              src="/images/logo-light.png"
+              alt="Pacific Friendly Realty — Lara Gabriele, REALTOR®"
+              fill
+              priority
+              sizes="220px"
+              className={`object-contain object-left transition-opacity duration-300 ${solid ? "opacity-0" : "opacity-100"}`}
+            />
+            <Image
+              src="/images/logo.png"
+              alt=""
+              fill
+              priority
+              sizes="220px"
+              className={`object-contain object-left transition-opacity duration-300 ${solid ? "opacity-100" : "opacity-0"}`}
+            />
+          </Link>
+          {/* Sits on the logo's "Lara Gabriele · REALTOR®" line, just past its end. */}
+          <a
+            href={site.phoneHref}
+            className={`absolute left-[76%] bottom-0 inline-flex items-center gap-1 whitespace-nowrap text-[10px] sm:text-[11px] leading-none tracking-wide tabular-nums transition-colors ${
+              solid ? "text-ink-soft hover:text-gold" : "text-cream/85 hover:text-gold-light"
+            }`}
+          >
+            <Phone size={10} className={solid ? "text-gold" : "text-gold-light"} />
+            {site.phone}
+          </a>
+        </div>
 
         <nav className="hidden lg:flex items-center gap-8" aria-label="Main">
           {links.map((link) => (

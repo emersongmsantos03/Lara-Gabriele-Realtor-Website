@@ -2,16 +2,21 @@
 // identical to the Google Business Profile — consistent NAP data is a local
 // ranking signal.
 export const site = {
-  // Set NEXT_PUBLIC_SITE_URL to the live domain (e.g. https://laragabriele.com)
-  // so canonical URLs, the sitemap and social previews point to it.
-  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://laragabriele.com").replace(/\/$/, ""),
+  // Live domain. www is the primary host (the bare domain redirects to it in
+  // Vercel), so canonical URLs, the sitemap and social previews use www.
+  url: (process.env.NEXT_PUBLIC_SITE_URL || "https://www.pacificfriendlyrealty.com").replace(/\/$/, ""),
   brand: "Pacific Friendly Realty",
   agent: "Lara Gabriele",
   title: "REALTOR®",
   brokerage: "eXp Realty",
-  // California DRE license number. The DRE requires it on advertising,
-  // including websites — fill it in before launch.
-  dreLicense: process.env.NEXT_PUBLIC_DRE_LICENSE || "",
+  // The DRE requires the agent's own license number and the responsible
+  // broker's name on advertising, including websites. Verified on the DRE
+  // public license lookup.
+  dreLicense: "01900255",
+  brokerageLegal: "eXp Realty of Southern California, Inc.",
+  brokerageDre: "02187306",
+  // Lara lives and works in San Marcos.
+  city: "San Marcos",
   phone: "+1 (512) 638-7486",
   phoneHref: "tel:+15126387486",
   phoneSchema: "+1-512-638-7486",
@@ -21,7 +26,7 @@ export const site = {
     instagram: "https://www.instagram.com/lara_gabriele_realtor/",
     linkedin: "https://www.linkedin.com/in/laragabrielerealtor/",
   },
-  geo: { latitude: 32.7157, longitude: -117.1611 },
+  geo: { latitude: 33.1434, longitude: -117.1661 },
 };
 
 export function jsonLdScript(data: unknown) {

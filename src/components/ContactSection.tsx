@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-const intents = ["Buy", "Sell", "Buy & sell", "Relocate", "Just exploring"];
+const intents = ["Buy", "Sell", "Relocate", "Off-market homes", "Just exploring"];
 
 export default function ContactSection({ area }: { area?: string }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -56,8 +56,8 @@ export default function ContactSection({ area }: { area?: string }) {
     "w-full rounded-xl border border-line bg-cream px-4 py-3.5 text-sm transition-colors focus:outline-none focus:border-sea focus:ring-2 focus:ring-sea/20";
 
   return (
-    <section id="contact" className="py-24 md:py-32 bg-ink text-cream">
-      <div className="mx-auto max-w-6xl px-6 lg:px-10 grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+    <section id="contact" className="py-20 md:py-24 bg-ink text-cream">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         <Reveal className="lg:col-span-5">
           <div className="flex items-center gap-4">
             <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-gold-light/60">
@@ -71,17 +71,19 @@ export default function ContactSection({ area }: { area?: string }) {
             </div>
             <div>
               <div className="font-display text-xl">Lara Gabriele</div>
-              <div className="text-sm text-cream/60">Usually replies the same day</div>
+              <div className="text-sm text-cream/60">
+                CA DRE #{site.dreLicense} &middot; Usually replies the same day
+              </div>
             </div>
           </div>
-          <h2 className="mt-10 font-display text-4xl md:text-6xl leading-[1.05] text-balance">
+          <h2 className="mt-8 font-display text-3xl md:text-4xl leading-tight text-balance">
             {area ? `Let's talk about ${area}.` : "Let’s talk about your move."}
           </h2>
-          <p className="mt-6 text-cream/70 leading-relaxed max-w-md">
+          <p className="mt-4 text-cream/70 leading-relaxed max-w-md">
             No pressure, no obligation — just honest answers. Prefer to talk
             now? Call or text me.
           </p>
-          <div className="mt-10 space-y-4">
+          <div className="mt-8 space-y-4">
             <a href={site.phoneHref} className="group flex items-center gap-4">
               <span className="w-11 h-11 rounded-full bg-cream/10 flex items-center justify-center group-hover:bg-gold-light transition-colors">
                 <Phone size={18} className="text-gold-light group-hover:text-ink transition-colors" />
@@ -99,7 +101,7 @@ export default function ContactSection({ area }: { area?: string }) {
 
         <Reveal delay={100} className="lg:col-span-7">
           {status === "success" ? (
-            <div className="rounded-3xl bg-cream text-ink p-10 md:p-14 text-center">
+            <div className="rounded-3xl bg-cream text-ink p-10 md:p-12 text-center">
               <div className="mx-auto w-14 h-14 rounded-full bg-sea/15 flex items-center justify-center">
                 <Check size={26} className="text-sea" />
               </div>
@@ -111,7 +113,7 @@ export default function ContactSection({ area }: { area?: string }) {
             </div>
           ) : (
             <form
-              className="rounded-3xl bg-cream text-ink p-6 sm:p-10 space-y-6"
+              className="rounded-3xl bg-cream text-ink p-6 sm:p-8 space-y-5"
               onSubmit={handleSubmit}
             >
               <fieldset>
@@ -171,7 +173,7 @@ export default function ContactSection({ area }: { area?: string }) {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gold text-cream text-base font-medium px-8 py-4 hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gold text-cream text-sm font-medium px-8 py-3.5 hover:bg-ink transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {status === "loading" && <Loader2 size={18} className="animate-spin" />}
                 {status === "loading" ? "Sending…" : "Send to Lara"}

@@ -77,89 +77,61 @@ export default function AreasIndex() {
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-40 pb-20 md:pt-48 md:pb-28">
-            <p className="text-gold-light tracking-[0.3em] text-xs md:text-sm uppercase mb-5">
+          <div className="relative mx-auto max-w-7xl px-6 lg:px-10 pt-36 pb-14 md:pt-40 md:pb-16">
+            <p className="text-gold-light tracking-[0.25em] text-xs uppercase mb-3">
               Neighborhood guide
             </p>
-            <h1 className="font-display text-[2.5rem] leading-[1.05] sm:text-6xl md:text-7xl max-w-4xl text-balance">
+            <h1 className="font-display text-4xl md:text-5xl leading-tight max-w-3xl text-balance">
               Where to live in San Diego County.
             </h1>
-            <p className="mt-6 max-w-2xl text-cream/80 text-base md:text-lg leading-relaxed">
-              Every community here has its own personality, price range, and
-              school story. Here&rsquo;s an honest, local look at the areas I
-              help buyers and sellers in every day.
+            <p className="mt-4 max-w-xl text-cream/75 leading-relaxed">
+              An honest, local look at the {areas.length} communities I help
+              buyers and sellers in every day.
             </p>
           </div>
         </section>
 
-        <section id="map" className="py-16 md:py-24 bg-cream-deep">
+        <section id="map" className="py-14 md:py-16 bg-cream-deep/60">
           <div className="mx-auto max-w-7xl px-6 lg:px-10">
-            <Reveal>
-              <h2 className="font-display text-3xl md:text-4xl">Explore the map</h2>
-              <p className="mt-3 text-ink-soft max-w-xl">
-                From the beach towns to the inland hills — filter by region
-                and pick a pin for the quick guide.
-              </p>
-            </Reveal>
-            <div className="mt-10">
-              <AreaMap points={getMapPoints()} regions={regions} />
-            </div>
+            <AreaMap points={getMapPoints()} regions={regions} />
           </div>
         </section>
 
-        {regions.map((region) => {
-          const list = areas.filter((a) => a.region === region);
-          if (!list.length) return null;
-          return (
-            <section key={region} className="py-16 md:py-20 border-b border-line last:border-0">
-              <div className="mx-auto max-w-7xl px-6 lg:px-10">
-                <Reveal>
-                  <h2 className="font-display text-3xl md:text-4xl">{region}</h2>
-                </Reveal>
-                <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {list.map((area, i) => (
-                    <Reveal key={area.slug} delay={(i % 3) * 80}>
+        <section className="py-14 md:py-20">
+          <div className="mx-auto max-w-7xl px-6 lg:px-10 space-y-12 md:space-y-14">
+            {regions.map((region) => {
+              const list = areas.filter((a) => a.region === region);
+              if (!list.length) return null;
+              return (
+                <Reveal key={region}>
+                  <h2 className="font-display text-2xl md:text-3xl">{region}</h2>
+                  <div className="mt-5 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {list.map((area) => (
                       <Link
+                        key={area.slug}
                         href={`/areas/${area.slug}`}
-                        className="group flex flex-col h-full rounded-2xl overflow-hidden border border-line bg-cream-deep/40 hover:border-gold/60 hover:shadow-xl hover:shadow-ink/5 hover:-translate-y-1 transition-all duration-300"
+                        className="group flex items-start justify-between gap-4 rounded-2xl border border-line bg-cream-deep/40 p-5 hover:border-gold/50 hover:bg-cream-deep/70 transition-colors"
                       >
-                        {area.image && (
-                          <div className="relative aspect-[16/10] overflow-hidden">
-                            <Image
-                              src={area.image}
-                              alt={`${area.name}, San Diego`}
-                              fill
-                              className="object-cover group-hover:scale-105 transition-transform duration-700"
-                              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                            />
-                          </div>
-                        )}
-                        <div className="p-7 flex-1 flex flex-col">
-                          <p className="text-xs tracking-[0.2em] uppercase text-gold">
-                            {area.tagline}
-                          </p>
-                          <h3 className="mt-3 font-display text-2xl group-hover:text-gold transition-colors">
+                        <span className="min-w-0">
+                          <span className="block font-display text-xl group-hover:text-gold transition-colors">
                             {area.name}
-                          </h3>
-                          <p className="mt-2 text-sm text-ink-soft leading-relaxed flex-1">
-                            {area.blurb}
-                          </p>
-                          <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-ink">
-                            Explore {area.name}
-                            <ArrowUpRight
-                              size={15}
-                              className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
-                            />
                           </span>
-                        </div>
+                          <span className="mt-1 block text-sm text-ink-soft leading-relaxed line-clamp-2">
+                            {area.blurb}
+                          </span>
+                        </span>
+                        <ArrowUpRight
+                          size={16}
+                          className="mt-1 shrink-0 text-ink-soft group-hover:text-gold transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        />
                       </Link>
-                    </Reveal>
-                  ))}
-                </div>
-              </div>
-            </section>
-          );
-        })}
+                    ))}
+                  </div>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
 
         <LocalInsight />
         <ContactSection />

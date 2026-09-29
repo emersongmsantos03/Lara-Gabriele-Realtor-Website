@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import L from "leaflet";
-import "leaflet/dist/leaflet.css";
 import type { MapPoint } from "@/lib/map-points";
 
 type Props = {
@@ -46,8 +45,16 @@ export default function AreaMapCanvas({ points, highlighted, selected, onSelect 
 
     layer.current = L.layerGroup().addTo(m);
     map.current = m;
+
+    // Leaflet measures its container once; re-measure whenever the box
+    // changes size (browser zoom, window resize, late layout shifts) so tiles
+    // and pins stay aligned.
+    const resize = new ResizeObserver(() => m.invalidateSize());
+    resize.observe(el.current);
+
     const current = markers.current;
     return () => {
+      resize.disconnect();
       m.remove();
       map.current = null;
       layer.current = null;

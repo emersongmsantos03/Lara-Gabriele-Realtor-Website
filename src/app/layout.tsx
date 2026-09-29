@@ -15,9 +15,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const title = "San Diego Realtor | Lara Gabriele — Homes for Sale & Real Estate Agent";
+const title = "San Marcos & Poway Realtor | Lara Gabriele — San Diego Real Estate Agent";
 const description =
-  "Lara Gabriele is a San Diego REALTOR® with 20+ years of experience helping buyers and sellers in La Jolla, Del Mar, Carlsbad, Coronado, Point Loma, Encinitas and across San Diego County. Free home valuations. eXp Luxury.";
+  "Lara Gabriele is a San Marcos REALTOR® and former senior mortgage underwriter helping buyers and sellers in San Marcos, Poway and across San Diego County — offers and financing that hold up. Free home valuations. eXp Luxury.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -82,7 +82,7 @@ const jsonLd = {
       priceRange: "$$$",
       address: {
         "@type": "PostalAddress",
-        addressLocality: "San Diego",
+        addressLocality: site.city,
         addressRegion: "CA",
         addressCountry: "US",
       },
@@ -96,6 +96,9 @@ const jsonLd = {
         })),
       ],
       knowsAbout: [
+        "Mortgage underwriting",
+        "Home financing and loan approval",
+        "Off-market homes",
         "Residential real estate",
         "Luxury homes",
         "Home valuation",
@@ -103,7 +106,17 @@ const jsonLd = {
         "VA loans",
         "Relocation",
       ],
-      memberOf: { "@type": "Organization", name: site.brokerage },
+      memberOf: { "@type": "Organization", name: site.brokerageLegal },
+      hasCredential: {
+        "@type": "EducationalOccupationalCredential",
+        credentialCategory: "license",
+        name: "California Real Estate Salesperson License",
+        identifier: `CA DRE #${site.dreLicense}`,
+        recognizedBy: {
+          "@type": "GovernmentOrganization",
+          name: "California Department of Real Estate",
+        },
+      },
       sameAs: [site.socials.instagram, site.socials.linkedin],
     },
     {

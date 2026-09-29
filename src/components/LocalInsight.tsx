@@ -35,42 +35,28 @@ const insights = [
 
 export default function LocalInsight() {
   return (
-    <section id="local-insight" className="py-24 md:py-32 bg-ink text-cream relative overflow-hidden">
-      <div className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full bg-gold/10 blur-3xl" />
-      <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
+    <section id="local-insight" className="py-16 md:py-20 bg-cream-deep/60 border-t border-line">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
-          <div className="grid lg:grid-cols-12 gap-8 items-end">
-            <div className="lg:col-span-7">
-              <p className="text-gold-light text-xs md:text-sm tracking-[0.25em] uppercase mb-4">
-                Local know-how
-              </p>
-              <h2 className="font-display text-3xl md:text-5xl leading-tight text-balance">
-                Six things about buying in San Diego that most websites won&rsquo;t tell you.
-              </h2>
-            </div>
-            <p className="lg:col-span-5 text-cream/65 leading-relaxed">
-              This is the kind of advice that saves clients real money — and
-              it&rsquo;s why working with someone who knows the county block by
-              block matters.
-            </p>
-          </div>
+          <p className="text-gold text-xs tracking-[0.25em] uppercase mb-3">Local know-how</p>
+          <h2 className="font-display text-3xl md:text-4xl leading-tight text-balance max-w-2xl">
+            Six things most websites won&rsquo;t tell you about buying here.
+          </h2>
         </Reveal>
 
-        <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-cream/10 rounded-2xl overflow-hidden">
-          {insights.map((item, i) => (
-            <Reveal key={item.title} delay={(i % 3) * 90}>
-              <div className="h-full bg-ink p-8 hover:bg-[#123650] transition-colors">
-                <div className="font-display text-4xl text-gold-light/40">
+        <Reveal delay={100}>
+          <ol className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-8">
+            {insights.map((item, i) => (
+              <li key={item.title} className="border-t border-line pt-5">
+                <span className="text-xs font-medium text-gold tabular-nums">
                   {String(i + 1).padStart(2, "0")}
-                </div>
-                <h3 className="mt-4 font-display text-xl">{item.title}</h3>
-                <p className="mt-3 text-sm text-cream/65 leading-relaxed">
-                  {item.detail}
-                </p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+                </span>
+                <h3 className="mt-2 font-display text-lg">{item.title}</h3>
+                <p className="mt-2 text-sm text-ink-soft leading-relaxed">{item.detail}</p>
+              </li>
+            ))}
+          </ol>
+        </Reveal>
       </div>
     </section>
   );

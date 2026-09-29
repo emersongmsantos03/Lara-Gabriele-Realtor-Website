@@ -19,6 +19,8 @@ export type Area = {
   region: Region;
   /** Only featured areas have photography; the rest render as text cards. */
   image?: string;
+  /** Required attribution for Creative Commons photos, shown on the area page. */
+  imageCredit?: string;
   featured?: boolean;
   tagline: string;
   blurb: string;
@@ -485,23 +487,27 @@ export const areas: Area[] = [
     slug: "poway",
     name: "Poway",
     region: "North County Inland",
+    featured: true,
+    image: "/images/area-poway.jpg",
+    imageCredit: "Lake Poway — photo by Laurens R. Krol, CC BY 4.0",
     tagline: "The City in the Country",
     blurb: "Larger lots, horse properties, and one of the county's top school districts.",
     description: [
       "Poway calls itself \"The City in the Country,\" and it earns the name — larger lots, horse trails, and open space, just 25 minutes from downtown San Diego.",
-      "Poway Unified is a major draw for families, and the city offers everything from starter homes to multi-acre estates in Green Valley and around StoneRidge.",
+      "Poway Unified is a major draw for families, and the city offers everything from starter homes in Old Poway to multi-acre estates in Green Valley, Twin Peaks and around StoneRidge Country Club.",
+      "Acreage, horse properties and homes with unpermitted additions can be tricky to appraise and finance. After 15 years as a senior mortgage underwriter, I know what lenders will question — so we deal with it before it can derail your escrow.",
     ],
     bestFor: ["Families", "Equestrian & acreage buyers", "Outdoor lovers"],
     highlights: [
       "Lake Poway is the starting point for the famous Potato Chip Rock hike on Mount Woodson.",
-      "Served by Poway Unified School District.",
+      "Served by the highly regarded Poway Unified School District.",
       "Many neighborhoods are zoned for horses, with trails throughout the city.",
       "Old Poway Park hosts a historic steam train and a weekly farmers market.",
     ],
     homes:
       "Single-family homes on larger lots, horse properties, custom estates on acreage, and some townhomes.",
-    schools: "Poway Unified School District, including Poway High.",
-    pockets: ["Old Poway", "Green Valley", "StoneRidge"],
+    schools: "Poway Unified School District, including Poway High School.",
+    pockets: ["Old Poway", "Green Valley", "Twin Peaks", "StoneRidge", "Garden Road", "High Valley"],
     nearby: ["rancho-bernardo", "scripps-ranch", "escondido"],
     coords: [32.9628, -117.0359],
   },
@@ -509,11 +515,14 @@ export const areas: Area[] = [
     slug: "san-marcos",
     name: "San Marcos",
     region: "North County Inland",
+    featured: true,
+    image: "/images/area-san-marcos.jpg",
     tagline: "Newer homes, close to everything",
     blurb: "Newer construction, a university town feel, and good value close to the coast.",
     description: [
-      "San Marcos offers a lot of what buyers want in North County — newer homes, hiking trails, and good schools — at prices often below the coastal cities, about 20 minutes from the beach.",
-      "San Elijo Hills and the neighborhoods around Double Peak are especially popular with families, while Lake San Marcos offers a quieter, lakeside lifestyle.",
+      "San Marcos offers a lot of what buyers want in North County — newer homes, hiking trails, and good schools — at prices often below the coastal cities, about 20 minutes from the beach. It's also where I live and work.",
+      "San Elijo Hills and the neighborhoods around Double Peak are especially popular with families, Lake San Marcos offers a quieter lakeside lifestyle, and Discovery Hills and Twin Oaks Valley add more space for the money.",
+      "Many newer San Marcos communities carry Mello-Roos and HOA dues, which lenders count against your debt-to-income ratio. As a former senior mortgage underwriter, I make sure those costs are in your numbers before you write an offer — not discovered in escrow.",
     ],
     bestFor: ["Growing families", "Move-up buyers", "Buyers who want newer construction"],
     highlights: [
@@ -524,8 +533,15 @@ export const areas: Area[] = [
     ],
     homes:
       "Newer master-planned single-family homes, townhomes, lakeside homes, and 55+ communities.",
-    schools: "San Marcos Unified School District.",
-    pockets: ["San Elijo Hills", "Lake San Marcos", "Santa Fe Hills"],
+    schools:
+      "San Marcos Unified School District, including San Marcos High and Mission Hills High.",
+    pockets: [
+      "San Elijo Hills",
+      "Lake San Marcos",
+      "Discovery Hills",
+      "Twin Oaks Valley",
+      "Santa Fe Hills",
+    ],
     nearby: ["carlsbad", "escondido", "oceanside"],
     coords: [33.1434, -117.1661],
   },
@@ -607,4 +623,13 @@ export function getArea(slug: string) {
   return areas.find((a) => a.slug === slug);
 }
 
-export const featuredAreas = areas.filter((a) => a.featured);
+// Shown on the homepage and in the footer, in this order. Poway and San Marcos
+// lead: they're Lara's home market and her local-search focus.
+export const featuredAreas = [
+  "san-marcos",
+  "poway",
+  "del-mar",
+  "carlsbad",
+  "encinitas",
+  "la-jolla",
+].map((slug) => getArea(slug)!);

@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Reveal from "./Reveal";
 
 const paths = [
@@ -8,86 +7,58 @@ const paths = [
     id: "sell",
     eyebrow: "Selling",
     title: "Sell for the best price, without the stress.",
+    body: "Honest pricing, eXp Luxury exposure — and offers vetted by a former underwriter, so you pick a buyer who will actually close.",
     image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1200&auto=format&fit=crop",
     imageAlt: "Modern San Diego home at dusk",
-    points: [
-      "Pricing from real comparables on your street",
-      "Professional photos, video & staging advice",
-      "eXp Luxury exposure to buyers nationwide",
-    ],
-    cta: { href: "#valuation", label: "Get my free home value" },
+    cta: { href: "#valuation", label: "Get my home value" },
   },
   {
     id: "buy",
     eyebrow: "Buying",
-    title: "Find the right home — and the right neighborhood.",
+    title: "Find the right home and neighborhood.",
+    body: "Offers and financing built to hold up, plus honest advice on value, schools and commute.",
     image:
-      "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1519046904884-53103b34b206?q=80&w=1200&auto=format&fit=crop",
     imageAlt: "Palm trees on a San Diego beach",
-    points: [
-      "Honest advice on value, schools & commute",
-      "First-time buyers, relocation & VA loans",
-      "Offers structured to win without overpaying",
-    ],
-    cta: { href: "#contact", label: "Start my home search" },
-    secondary: { href: "/areas", label: "Explore neighborhoods" },
+    cta: { href: "#contact", label: "Start my search" },
   },
 ];
 
 export default function Paths() {
   return (
-    <section id="services" className="pb-24 md:pb-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid lg:grid-cols-2 gap-6">
+    <section id="services" className="pb-4">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10 grid md:grid-cols-2 gap-5">
         {paths.map((p, i) => (
           <Reveal key={p.id} delay={i * 100}>
             <article
               id={p.id}
-              className="group h-full flex flex-col rounded-3xl overflow-hidden bg-cream-deep/60 border border-line"
+              className="group h-full flex flex-col rounded-2xl overflow-hidden bg-cream-deep/50 border border-line"
             >
-              <div className="relative aspect-[16/10] overflow-hidden">
+              <div className="relative aspect-[2/1] md:aspect-[5/2] overflow-hidden">
                 <Image
                   src={p.image}
                   alt={p.imageAlt}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-[1200ms] ease-out"
-                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  sizes="(min-width: 768px) 50vw, 100vw"
                 />
-                <span className="absolute top-5 left-5 text-xs tracking-[0.2em] uppercase font-medium px-3.5 py-1.5 rounded-full bg-cream text-ink">
+                <span className="absolute top-4 left-4 text-[11px] tracking-[0.2em] uppercase font-medium px-3 py-1 rounded-full bg-cream text-ink">
                   {p.eyebrow}
                 </span>
               </div>
-              <div className="flex-1 flex flex-col p-8 md:p-10">
-                <h2 className="font-display text-3xl md:text-4xl leading-tight text-balance">
+              <div className="flex-1 flex flex-col p-6 md:p-7">
+                <h2 className="font-display text-2xl md:text-[1.7rem] leading-tight text-balance">
                   {p.title}
                 </h2>
-                <ul className="mt-6 space-y-3 flex-1">
-                  {p.points.map((pt) => (
-                    <li key={pt} className="flex items-start gap-3 text-ink-soft">
-                      <span className="mt-0.5 w-5 h-5 rounded-full bg-sea/15 flex items-center justify-center shrink-0">
-                        <Check size={12} className="text-sea" strokeWidth={3} />
-                      </span>
-                      {pt}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-                  <a
-                    href={p.cta.href}
-                    className="inline-flex items-center gap-2 rounded-full bg-ink text-cream text-sm font-medium px-7 py-3.5 hover:bg-gold transition-colors"
-                  >
-                    {p.cta.label}
-                    <ArrowRight size={15} />
-                  </a>
-                  {p.secondary && (
-                    <Link
-                      href={p.secondary.href}
-                      className="text-sm font-medium text-ink border-b border-ink/30 pb-0.5 hover:border-ink"
-                    >
-                      {p.secondary.label}
-                    </Link>
-                  )}
-                </div>
+                <p className="mt-2 text-sm text-ink-soft leading-relaxed flex-1">{p.body}</p>
+                <a
+                  href={p.cta.href}
+                  className="group/cta mt-5 self-start inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-gold transition-colors"
+                >
+                  {p.cta.label}
+                  <ArrowRight size={15} className="transition-transform group-hover/cta:translate-x-0.5" />
+                </a>
               </div>
             </article>
           </Reveal>

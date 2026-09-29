@@ -11,21 +11,18 @@ const icons: Record<Moment, typeof Sun> = {
 
 export default function DayIn({ area, stops }: { area: string; stops: Stop[] }) {
   return (
-    <section id="a-day-in" className="py-20 md:py-28 bg-cream-deep">
+    <section id="a-day-in" className="py-16 md:py-20 bg-cream-deep/60">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal>
-          <p className="text-gold text-xs md:text-sm tracking-[0.25em] uppercase mb-4">
+          <p className="text-gold text-xs tracking-[0.25em] uppercase mb-3">
             A day in the life
           </p>
-          <h2 className="font-display text-3xl md:text-5xl leading-tight text-balance max-w-3xl">
+          <h2 className="font-display text-3xl md:text-4xl leading-tight text-balance">
             A perfect Saturday in {area}.
           </h2>
-          <p className="mt-4 text-ink-soft max-w-xl text-lg">
-            What a weekend really looks like once you live here.
-          </p>
         </Reveal>
 
-        <div className="mt-14 relative">
+        <div className="mt-10 relative">
           {/* Connecting line: vertical on mobile, horizontal from md up. */}
           <div
             aria-hidden
@@ -44,7 +41,7 @@ export default function DayIn({ area, stops }: { area: string; stops: Stop[] }) 
                     <p className="text-xs tracking-[0.2em] uppercase text-ink-soft">
                       {stop.when}
                     </p>
-                    <h3 className="mt-2 font-display text-xl md:text-2xl">{stop.title}</h3>
+                    <h3 className="mt-2 font-display text-xl">{stop.title}</h3>
                     <p className="mt-2 text-sm text-ink-soft leading-relaxed">{stop.text}</p>
                   </div>
                 </Reveal>

@@ -2,6 +2,8 @@ import NavBar from "@/components/NavBar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Paths from "@/components/Paths";
+import Testimonials from "@/components/Testimonials";
+import OffMarket from "@/components/OffMarket";
 import HomeValuation from "@/components/HomeValuation";
 import Areas from "@/components/Areas";
 import Faq from "@/components/Faq";
@@ -18,6 +20,8 @@ export default function Home() {
         <Hero />
         <About />
         <Paths />
+        <OffMarket />
+        <Testimonials />
         <HomeValuation />
         <Areas />
         <Faq />
