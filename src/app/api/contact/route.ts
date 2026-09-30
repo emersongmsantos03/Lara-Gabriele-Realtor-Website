@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { leadHtml, leadSubject, leadText, type Lead, type LeadContext } from "@/lib/lead-email";
 
 // Every lead goes to all of these inboxes.
 const LEAD_EMAILS = [
@@ -18,13 +19,18 @@ const usingTestSender = !process.env.RESEND_FROM;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : undefined);
+
+// Vercel adds approximate visitor geolocation to every request.
+function visitorLocation(request: NextRequest) {
+  const h = request.headers;
+  const decode = (v: string | null) => (v ? decodeURIComponent(v) : undefined);
+  const parts = [
+    decode(h.get("x-vercel-ip-city")),
+    decode(h.get("x-vercel-ip-country-region")),
+    decode(h.get("x-vercel-ip-country")),
+  ].filter(Boolean);
+  return parts.length ? parts.join(", ") : undefined;
 }
 
 export async function POST(request: NextRequest) {
@@ -68,30 +74,32 @@ export async function POST(request: NextRequest) {
 
   const resend = new Resend(apiKey);
 
-  const subject = isSubscribe
-    ? `New listing alert signup: ${email}`
-    : isValuation
-      ? `Home valuation request: ${address}`
-      : `New website inquiry from ${name}${typeof area === "string" && area ? ` (${area})` : ""}`;
-
-  const html = isSubscribe
-    ? `<p>A visitor subscribed for new listing alerts.</p>
-       <p><strong>Email:</strong> ${escapeHtml(email)}</p>`
-    : isValuation
-      ? `<p>A visitor requested a free home valuation.</p>
-         <p><strong>Address:</strong> ${escapeHtml(String(address))}</p>
-         <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-         ${phone && typeof phone === "string" ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ""}`
-      : `<p>You have a new inquiry from your website.</p>
-       <p><strong>Name:</strong> ${escapeHtml(String(name))}</p>
-       <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-       ${phone && typeof phone === "string" ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ""}
-       ${intent && typeof intent === "string" ? `<p><strong>Looking to:</strong> ${escapeHtml(intent)}</p>` : ""}
-       ${area && typeof area === "string" ? `<p><strong>Sent from:</strong> ${escapeHtml(area)} neighborhood page</p>` : ""}
-       ${message && typeof message === "string" ? `<p><strong>Message:</strong><br/>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>` : ""}`;
+  const lead: Lead = {
+    kind: isSubscribe ? "subscribe" : isValuation ? "valuation" : "contact",
+    name: str(name),
+    email,
+    phone: str(phone),
+    intent: str(intent),
+    message: str(message),
+    address: str(address),
+    area: str(area),
+  };
+  const ua = request.headers.get("user-agent") ?? "";
+  const ctx: LeadContext = {
+    pageUrl: request.headers.get("referer") ?? undefined,
+    location: visitorLocation(request),
+    device: ua ? (/Mobi|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop") : undefined,
+    receivedAt: new Date(),
+  };
 
   try {
-    const message = { from: FROM, replyTo: email, subject, html };
+    const message = {
+      from: FROM,
+      replyTo: email,
+      subject: leadSubject(lead),
+      html: leadHtml(lead, ctx),
+      text: leadText(lead, ctx),
+    };
     const { error } = await resend.emails.send({ ...message, to: LEAD_EMAILS });
 
     if (error) {
