@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const LEAD_EMAIL = "larag.realty@gmail.com";
+// Every lead goes to all of these inboxes.
+const LEAD_EMAILS = [
+  "larag.realty@gmail.com",
+  "lara.gabriele@exprealty.com",
+  "lara@pacificfriendlyrealty.com",
+  "emerson@wisprnetwork.com",
+];
+
+// Resend's shared test sender (onboarding@resend.dev) only delivers to the
+// Resend account owner. Verify pacificfriendlyrealty.com in Resend and set
+// RESEND_FROM (e.g. "Lara Gabriele Website <website@pacificfriendlyrealty.com>")
+// so every address above receives leads.
+const FROM = process.env.RESEND_FROM || "Lara Gabriele Website <onboarding@resend.dev>";
+const usingTestSender = !process.env.RESEND_FROM;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function escapeHtml(value: string) {
   return value
@@ -76,17 +91,29 @@ export async function POST(request: NextRequest) {
        ${message && typeof message === "string" ? `<p><strong>Message:</strong><br/>${escapeHtml(message).replace(/\n/g, "<br/>")}</p>` : ""}`;
 
   try {
-    const { error } = await resend.emails.send({
-      from: "Lara Gabriele Website <onboarding@resend.dev>",
-      to: LEAD_EMAIL,
-      replyTo: email,
-      subject,
-      html,
-    });
+    const message = { from: FROM, replyTo: email, subject, html };
+    const { error } = await resend.emails.send({ ...message, to: LEAD_EMAILS });
 
     if (error) {
       console.error("Resend error:", error);
-      return NextResponse.json({ error: "Could not send message." }, { status: 502 });
+      if (!usingTestSender) {
+        return NextResponse.json({ error: "Could not send message." }, { status: 502 });
+      }
+      // The test sender rejects the whole message if any recipient isn't the
+      // account owner. Fall back to one inbox at a time so the lead still
+      // reaches whoever the sender can deliver to. Sequential and spaced out
+      // to stay under Resend's rate limit.
+      console.error("RESEND_FROM is not set — verify the domain in Resend to reach every inbox.");
+      let delivered = 0;
+      for (const to of LEAD_EMAILS) {
+        const res = await resend.emails.send({ ...message, to });
+        if (res.error) console.error(`Resend error for ${to}:`, res.error);
+        else delivered++;
+        await sleep(600);
+      }
+      if (!delivered) {
+        return NextResponse.json({ error: "Could not send message." }, { status: 502 });
+      }
     }
 
     return NextResponse.json({ ok: true });
