@@ -8,11 +8,24 @@ import { site } from "@/lib/site";
 
 type Status = "idle" | "loading" | "success" | "error";
 
+// US numbers are formatted as the visitor types: (760) 555-0142. Anything
+// starting with "+" (other than +1) is left as typed for international callers.
+function formatPhone(raw: string) {
+  if (raw.startsWith("+") && !raw.startsWith("+1")) return raw.slice(0, 20);
+  let d = raw.replace(/\D/g, "");
+  if (d.length === 11 && d.startsWith("1")) d = d.slice(1);
+  d = d.slice(0, 10);
+  if (d.length < 4) return d.length ? `(${d}` : "";
+  if (d.length < 7) return `(${d.slice(0, 3)}) ${d.slice(3)}`;
+  return `(${d.slice(0, 3)}) ${d.slice(3, 6)}-${d.slice(6)}`;
+}
+
 const intents = ["Buy", "Sell", "Relocate", "Off-market homes", "Just exploring"];
 
 export default function ContactSection({ area }: { area?: string }) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [phone, setPhone] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,7 +43,7 @@ export default function ContactSection({ area }: { area?: string }) {
           type: "contact",
           name: data.get("name"),
           email: data.get("email"),
-          phone: data.get("phone"),
+          phone: phone && !phone.startsWith("+") ? `+1 ${phone}` : phone,
           intent: data.get("intent"),
           message: data.get("message"),
           area,
@@ -44,6 +57,7 @@ export default function ContactSection({ area }: { area?: string }) {
 
       setStatus("success");
       form.reset();
+      setPhone("");
     } catch (err) {
       setStatus("error");
       setErrorMessage(
@@ -144,8 +158,25 @@ export default function ContactSection({ area }: { area?: string }) {
                   <input id="name" name="name" type="text" required autoComplete="name" placeholder="Your name" className={input} />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="sr-only">Phone</label>
-                  <input id="phone" name="phone" type="tel" autoComplete="tel" placeholder="Phone (optional)" className={input} />
+                  <label htmlFor="phone" className="sr-only">Phone (optional)</label>
+                  <div className="flex items-stretch rounded-xl border border-line bg-cream transition-colors focus-within:border-sea focus-within:ring-2 focus-within:ring-sea/20">
+                    <span className="flex items-center gap-1.5 pl-4 pr-3 border-r border-line text-sm text-ink-soft select-none" aria-hidden="true">
+                      <span>🇺🇸</span>+1
+                    </span>
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      inputMode="tel"
+                      autoComplete="tel-national"
+                      placeholder="Phone (optional)"
+                      value={phone}
+                      onChange={(e) => setPhone(formatPhone(e.target.value))}
+                      pattern="\(\d{3}\) \d{3}-\d{4}|\+.{6,}"
+                      title="Enter a 10-digit US number, or start with + for international"
+                      className="min-w-0 flex-1 bg-transparent px-3 py-3.5 text-sm focus:outline-none"
+                    />
+                  </div>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="email" className="sr-only">Email</label>
