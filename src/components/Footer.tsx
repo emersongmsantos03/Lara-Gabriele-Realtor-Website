@@ -128,7 +128,7 @@ export default function Footer() {
         <div className="mt-10 pt-6 border-t border-cream/10 flex flex-col md:flex-row gap-3 md:gap-6 text-xs">
           <span>© {new Date().getFullYear()} Pacific Friendly Realty. All rights reserved.</span>
           <span>
-            Lara Gabriele, REALTOR&reg; &middot; CA DRE #{site.dreLicense} &middot;{" "}
+            Lara Gabriele, REALTOR&reg;, SRES&reg; &middot; CA DRE #{site.dreLicense} &middot;{" "}
             {site.brokerageLegal}, CA DRE #{site.brokerageDre}
           </span>
           <span className="inline-flex items-center gap-1.5">

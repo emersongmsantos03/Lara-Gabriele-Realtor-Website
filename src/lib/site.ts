@@ -13,6 +13,8 @@ export const site = {
   // broker's name on advertising, including websites. Verified on the DRE
   // public license lookup.
   dreLicense: "01900255",
+  // Professional designations shown on the About section and in schema.
+  credentials: ["Seniors Real Estate Specialist (SRES®)", "Luxury Specialist"],
   brokerageLegal: "eXp Realty of Southern California, Inc.",
   brokerageDre: "02187306",
   // Lara lives and works in San Marcos.

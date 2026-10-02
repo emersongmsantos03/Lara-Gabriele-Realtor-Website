@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
+import { site } from "@/lib/site";
 
 const facts = [
   { value: "15", label: "years as a mortgage underwriter" },
@@ -40,6 +41,11 @@ export default function About() {
                 across Poway, North County and the coast &mdash; with honest
                 advice and a lot of attention to detail.
               </p>
+              <p>
+                I&rsquo;m also a certified Seniors Real Estate Specialist
+                (SRES&reg;) and a luxury specialist &mdash; whether you&rsquo;re
+                downsizing after decades in one home or buying at the high end.
+              </p>
               <p>No assistants, no call centers. You call, I answer.</p>
             </div>
             <p className="mt-6 font-display italic text-2xl text-gold">Lara</p>
@@ -54,6 +60,16 @@ export default function About() {
                 </div>
               ))}
             </div>
+            <ul className="mt-6 flex flex-wrap gap-2 max-w-xl">
+              {site.credentials.map((c) => (
+                <li
+                  key={c}
+                  className="rounded-full border border-gold/40 px-3.5 py-1.5 text-xs text-ink-soft"
+                >
+                  {c}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         </div>
       </div>

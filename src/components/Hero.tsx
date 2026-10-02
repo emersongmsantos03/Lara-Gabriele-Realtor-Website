@@ -89,7 +89,7 @@ export default function Hero() {
               <div className="px-2 pt-4 pb-2 flex items-center justify-between">
                 <div>
                   <div className="font-display text-xl text-cream">Lara Gabriele</div>
-                  <div className="text-xs text-cream/65 mt-0.5">REALTOR&reg; &middot; eXp Luxury</div>
+                  <div className="text-xs text-cream/65 mt-0.5">REALTOR&reg; &middot; SRES&reg; &middot; Luxury Specialist</div>
                 </div>
                 <span className="text-xs text-gold-light tracking-wide uppercase">
                   Meet me →

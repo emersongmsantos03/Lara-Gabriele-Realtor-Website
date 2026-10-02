@@ -17,7 +17,7 @@ const inter = Inter({
 
 const title = "San Marcos & Poway Realtor | Lara Gabriele — San Diego Real Estate Agent";
 const description =
-  "Lara Gabriele is a San Marcos REALTOR® and former senior mortgage underwriter helping buyers and sellers in San Marcos, Poway and across San Diego County — offers and financing that hold up. Free home valuations. eXp Luxury.";
+  "Lara Gabriele is a San Marcos REALTOR® and former senior mortgage underwriter helping buyers and sellers in San Marcos, Poway and across San Diego County — offers and financing that hold up. SRES® and luxury specialist. Free home valuations.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -39,6 +39,8 @@ export const metadata: Metadata = {
     "Coronado real estate agent",
     "luxury real estate San Diego",
     "eXp Luxury",
+    "Seniors Real Estate Specialist San Diego",
+    "SRES realtor",
   ],
   alternates: { canonical: "/" },
   openGraph: {
@@ -101,22 +103,39 @@ const jsonLd = {
         "Off-market homes",
         "Residential real estate",
         "Luxury homes",
+        "Seniors real estate and downsizing",
         "Home valuation",
         "First-time home buyers",
         "VA loans",
         "Relocation",
       ],
       memberOf: { "@type": "Organization", name: site.brokerageLegal },
-      hasCredential: {
-        "@type": "EducationalOccupationalCredential",
-        credentialCategory: "license",
-        name: "California Real Estate Salesperson License",
-        identifier: `CA DRE #${site.dreLicense}`,
-        recognizedBy: {
-          "@type": "GovernmentOrganization",
-          name: "California Department of Real Estate",
+      hasCredential: [
+        {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "license",
+          name: "California Real Estate Salesperson License",
+          identifier: `CA DRE #${site.dreLicense}`,
+          recognizedBy: {
+            "@type": "GovernmentOrganization",
+            name: "California Department of Real Estate",
+          },
         },
-      },
+        {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "certification",
+          name: "Seniors Real Estate Specialist (SRES®)",
+          recognizedBy: {
+            "@type": "Organization",
+            name: "National Association of REALTORS®",
+          },
+        },
+        {
+          "@type": "EducationalOccupationalCredential",
+          credentialCategory: "certification",
+          name: "Luxury Specialist",
+        },
+      ],
       sameAs: [site.socials.instagram, site.socials.linkedin],
     },
     {
