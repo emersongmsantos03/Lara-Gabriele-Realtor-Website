@@ -19,9 +19,9 @@ export const site = {
   brokerageDre: "02187306",
   // Lara lives and works in San Marcos.
   city: "San Marcos",
-  phone: "+1 (512) 638-7486",
-  phoneHref: "tel:+15126387486",
-  phoneSchema: "+1-512-638-7486",
+  phone: "+1 (619) 567-9584",
+  phoneHref: "tel:+16195679584",
+  phoneSchema: "+1-619-567-9584",
   email: "lara.gabriele@exprealty.com",
   newsletterUrl: "https://laragabrielerealty.myflodesk.com/getintouch",
   socials: {
