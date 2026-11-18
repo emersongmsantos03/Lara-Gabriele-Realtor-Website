@@ -1,0 +1,297 @@
+/* Admin panel look: calm neutrals with the brand navy, so the content is the
+   loudest thing on screen. */
+.admin-root {
+  --a-bg: #f5f6f8;
+  --a-panel: #ffffff;
+  --a-text: #15212c;
+  --a-muted: #5d6b78;
+  --a-faint: #8a96a1;
+  --a-line: #e3e7ec;
+  --a-hover: #eef1f5;
+  --a-navy: #0e2b40;
+  --a-accent: #c9671f;
+  --a-good: #1d7a46;
+  --a-bad: #b4372a;
+  background: var(--a-bg);
+  color: var(--a-text);
+  margin-bottom: -64px; /* cancels the public site's mobile call-bar spacer */
+}
+@media (min-width: 768px) {
+  .admin-root {
+    margin-bottom: 0;
+  }
+}
+.admin-root ::selection {
+  background: #b9d6f5;
+  color: #0e2b40;
+}
+
+/* In the components layer so Tailwind utilities (hidden, sm:inline-flex, h-9…)
+   can still override these on individual elements. */
+@layer components {
+.a-card {
+  background: var(--a-panel);
+  border: 1px solid var(--a-line);
+  border-radius: 16px;
+}
+
+.a-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+}
+.a-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.a-btn-primary {
+  background: var(--a-navy);
+  color: #fff;
+}
+.a-btn-primary:hover:not(:disabled) {
+  background: #18405d;
+}
+.a-btn-accent {
+  background: var(--a-accent);
+  color: #fff;
+}
+.a-btn-accent:hover:not(:disabled) {
+  background: #b15816;
+}
+.a-btn-ghost {
+  background: var(--a-panel);
+  color: var(--a-text);
+  border: 1px solid var(--a-line);
+}
+.a-btn-ghost:hover:not(:disabled) {
+  background: var(--a-hover);
+}
+.a-btn-danger {
+  background: #fff;
+  color: var(--a-bad);
+  border: 1px solid #f0c9c4;
+}
+.a-btn-danger:hover:not(:disabled) {
+  background: #fdf0ee;
+}
+
+.a-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--a-line);
+  background: #fff;
+  font-size: 15px;
+  color: var(--a-text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+textarea.a-input {
+  height: auto;
+  padding: 10px 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.a-input:focus {
+  border-color: #6aa3d8;
+  box-shadow: 0 0 0 3px rgba(42, 120, 214, 0.15);
+}
+
+.admin-root :focus-visible {
+  outline: 2px solid #2a78d6;
+  outline-offset: 2px;
+}
+
+/* ---------- Editor ---------- */
+.editor-canvas .ProseMirror {
+  outline: none;
+  min-height: 420px;
+  padding-bottom: 120px;
+}
+.editor-canvas .ProseMirror p.is-editor-empty:first-child::before,
+.editor-canvas .ProseMirror .is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: #a3adb7;
+}
+.editor-canvas .ProseMirror img {
+  cursor: pointer;
+  transition: box-shadow 0.15s;
+}
+.editor-canvas .ProseMirror img.ProseMirror-selectednode {
+  box-shadow: 0 0 0 3px #2a78d6;
+}
+.editor-canvas .ProseMirror div[data-youtube-video] {
+  position: relative;
+}
+.editor-canvas .ProseMirror div[data-youtube-video].ProseMirror-selectednode iframe {
+  box-shadow: 0 0 0 3px #2a78d6;
+}
+.editor-canvas .ProseMirror div[data-youtube-video] iframe {
+  pointer-events: none;
+}
+.editor-canvas .ProseMirror hr.ProseMirror-selectednode {
+  border-top-color: #2a78d6;
+}
+.editor-canvas .ProseMirror figure.ProseMirror-selectednode img,
+.editor-canvas .ProseMirror div[data-type="map"].ProseMirror-selectednode iframe {
+  box-shadow: 0 0 0 3px #2a78d6;
+}
+.editor-canvas .ProseMirror div[data-type="button"].ProseMirror-selectednode a {
+  outline: 3px solid #2a78d6;
+  outline-offset: 3px;
+}
+.editor-canvas .ProseMirror div[data-type="button"] a,
+.editor-canvas .ProseMirror div[data-type="map"] {
+  cursor: pointer;
+}
+.editor-canvas .ProseMirror div[data-type="map"] iframe {
+  pointer-events: none;
+}
+.editor-canvas .ProseMirror .selectedCell {
+  background: rgba(42, 120, 214, 0.12);
+}
+.editor-canvas .ProseMirror li[data-type="taskItem"] input {
+  cursor: pointer;
+}
+.editor-canvas .ProseMirror :is(p, h2, h3).is-empty::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+  color: #a3adb7;
+}
+
+/* Drag handle: grab ⋮⋮ to move a block, + to add one below */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  padding-right: 6px;
+  transition: opacity 0.15s;
+}
+.dh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 26px;
+  border-radius: 6px;
+  color: #a3adb7;
+}
+.dh-btn:hover {
+  background: var(--a-hover);
+  color: #33414e;
+}
+
+.tb-btn {
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border-radius: 8px;
+  color: #33414e;
+  font-size: 14px;
+  transition: background-color 0.12s, color 0.12s;
+}
+.tb-btn:hover:not(:disabled) {
+  background: var(--a-hover);
+  color: var(--a-text);
+}
+.tb-btn[data-active="true"] {
+  background: #dcebfa;
+  color: #0f4f99;
+}
+.tb-btn:disabled {
+  opacity: 0.35;
+}
+.tb-sep {
+  width: 1px;
+  height: 22px;
+  background: var(--a-line);
+  margin: 0 4px;
+}
+
+.bubble {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: #15212c;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(10, 20, 30, 0.25);
+}
+.bubble .tb-btn {
+  color: #e6ebf0;
+  min-width: 32px;
+  height: 32px;
+}
+.bubble .tb-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.bubble .tb-btn[data-active="true"] {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+.bubble .tb-sep {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.pop {
+  position: absolute;
+  z-index: 40;
+  background: #fff;
+  border: 1px solid var(--a-line);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(10, 20, 30, 0.16);
+  padding: 6px;
+}
+.pop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--a-text);
+}
+.pop-item:hover {
+  background: var(--a-hover);
+}
+.pop-item[data-active="true"] {
+  background: #eaf3fc;
+  font-weight: 600;
+}
+
+@keyframes a-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.a-toast {
+  animation: a-fade-in 0.18s ease-out;
+}
+}

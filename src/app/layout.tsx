@@ -3,6 +3,7 @@ import { Fraunces, Inter } from "next/font/google";
 import "./globals.css";
 import { site, jsonLdScript } from "@/lib/site";
 import { areas } from "@/lib/areas";
+import VisitTracker from "@/components/VisitTracker";
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -153,6 +154,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      // Browser translators (e.g. Chrome → Portuguese) rewrite lang/class on <html>;
+      // that's expected, not a bug.
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
       className={`${fraunces.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
@@ -163,6 +168,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       <body className="min-h-full flex flex-col bg-cream text-ink font-body pb-[64px] md:pb-0">
         {children}
+        <VisitTracker />
       </body>
     </html>
   );

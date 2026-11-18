@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { recordLead } from "@/lib/admin/analytics";
+import { memoryLimit, rateLimit } from "@/lib/admin/security";
 import { leadHtml, leadSubject, leadText, type Lead, type LeadContext } from "@/lib/lead-email";
 
 // Every lead goes to all of these inboxes.
@@ -19,7 +21,7 @@ const usingTestSender = !process.env.RESEND_FROM;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : undefined);
+const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim().slice(0, 4000) : undefined);
 
 // Vercel adds approximate visitor geolocation to every request.
 function visitorLocation(request: NextRequest) {
@@ -34,6 +36,20 @@ function visitorLocation(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  // Anti-spam: 5 messages per 10 minutes per network. Never blocks a real lead
+  // if the database is unreachable (fails open).
+  const ip = request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "local";
+  if (!memoryLimit(`contact:${ip}`, 8, 10 * 60_000)) {
+    return NextResponse.json({ error: "Too many messages. Please try again in a few minutes, or call us." }, { status: 429 });
+  }
+  const allowed = await rateLimit(`contact:${ip}`, 5, 600).catch(() => true);
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many messages. Please try again in a few minutes, or call us." }, { status: 429 });
+  }
+  if (Number(request.headers.get("content-length") || 0) > 50_000) {
+    return NextResponse.json({ error: "Message is too long." }, { status: 413 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -124,6 +140,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Counted in the /admin dashboard. Never let analytics break a lead.
+    await recordLead("pacific").catch((e) => console.error("Lead count failed:", e));
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Failed to send email:", err);

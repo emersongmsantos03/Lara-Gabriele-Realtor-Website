@@ -2,9 +2,14 @@ import type { MetadataRoute } from "next";
 import { site } from "@/lib/site";
 import { areas } from "@/lib/areas";
 import { guides } from "@/lib/guides";
+import { livePosts } from "@/lib/admin/posts";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Includes blog posts written in /admin; refreshed hourly and after each publish.
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
+  const posts = await livePosts("pacific").catch(() => []);
 
   return [
     {
@@ -36,6 +41,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${site.url}/guides/${guide.slug}`,
       lastModified: new Date(guide.updated),
       changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
+    {
+      url: `${site.url}/blog`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    ...posts.map((post) => ({
+      url: `${site.url}/blog/${post.slug}`,
+      lastModified: new Date(post.updatedAt),
+      changeFrequency: "monthly" as const,
       priority: 0.6,
     })),
   ];

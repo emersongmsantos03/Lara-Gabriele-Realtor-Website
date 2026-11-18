@@ -1,0 +1,347 @@
+/* Blog post body. Used by the public /blog pages AND the admin editor, so the
+   editor shows exactly what will be published. The two static sites carry a
+   copy of these rules in _source/blog.py — keep them in step. */
+
+.post-body {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  overflow-wrap: break-word;
+}
+.post-body::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.post-body > * + * {
+  margin-top: 1.1em;
+}
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1.25;
+  margin-top: 1.7em;
+}
+.post-body h2 {
+  font-size: 1.9rem;
+}
+.post-body h3 {
+  font-size: 1.4rem;
+}
+.post-body strong,
+.post-body b {
+  color: var(--ink);
+  font-weight: 650;
+}
+.post-body a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.post-body ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.post-body ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.post-body li + li {
+  margin-top: 0.4em;
+}
+.post-body li > p {
+  margin: 0;
+}
+.post-body blockquote {
+  border-left: 3px solid var(--gold);
+  padding: 0.2em 0 0.2em 1.1em;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--ink);
+}
+.post-body hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 2.4em 0;
+}
+.post-body mark {
+  padding: 0.05em 0.2em;
+  border-radius: 3px;
+  color: inherit;
+}
+.post-body code {
+  font-size: 0.9em;
+  background: rgba(14, 43, 64, 0.06);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.post-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 1.6em auto;
+}
+.post-body img[data-size="small"] {
+  width: 33%;
+}
+.post-body img[data-size="medium"] {
+  width: 50%;
+}
+.post-body img[data-size="large"] {
+  width: 75%;
+}
+.post-body img[data-size="full"] {
+  width: 100%;
+}
+.post-body img[data-align="left"] {
+  float: left;
+  margin: 0.35em 1.5em 1em 0;
+}
+.post-body img[data-align="right"] {
+  float: right;
+  margin: 0.35em 0 1em 1.5em;
+}
+.post-body img[data-size="full"][data-align] {
+  float: none;
+  margin: 1.6em auto;
+}
+/* Photos are <figure data-type="image"> (older posts: bare <img>). */
+.post-body figure[data-type="image"] {
+  display: block;
+  margin: 1.6em auto;
+  width: 100%;
+}
+.post-body figure[data-type="image"] img {
+  width: 100%;
+  margin: 0;
+}
+.post-body figure[data-size="small"] {
+  width: 33%;
+}
+.post-body figure[data-size="medium"] {
+  width: 50%;
+}
+.post-body figure[data-size="large"] {
+  width: 75%;
+}
+.post-body figure[data-align="left"]:not([data-size="full"]) {
+  float: left;
+  margin: 0.35em 1.5em 1em 0;
+}
+.post-body figure[data-align="right"]:not([data-size="full"]) {
+  float: right;
+  margin: 0.35em 0 1em 1.5em;
+}
+.post-body figcaption {
+  margin-top: 0.6em;
+  font-size: 0.85em;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  opacity: 0.85;
+  text-align: center;
+}
+.post-body sub,
+.post-body sup {
+  font-size: 0.7em;
+}
+
+/* Buttons */
+.post-body div[data-type="button"] {
+  margin: 1.8em 0;
+  text-align: center;
+}
+.post-body div[data-type="button"][data-align="left"] {
+  text-align: left;
+}
+.post-body div[data-type="button"][data-align="right"] {
+  text-align: right;
+}
+.post-body div[data-type="button"] a {
+  display: inline-block;
+  border: 2px solid;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  padding: 0.8em 1.6em;
+  font-size: 0.95em;
+  border-radius: 999px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+.post-body div[data-type="button"] a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(14, 43, 64, 0.18);
+  filter: brightness(1.05);
+}
+.post-body div[data-type="button"] a[data-size="sm"] {
+  padding: 0.55em 1.15em;
+  font-size: 0.85em;
+}
+.post-body div[data-type="button"] a[data-size="lg"] {
+  padding: 1em 2.1em;
+  font-size: 1.1em;
+}
+.post-body div[data-type="button"] a[data-shape="rounded"] {
+  border-radius: 10px;
+}
+.post-body div[data-type="button"] a[data-shape="square"] {
+  border-radius: 0;
+}
+.post-body div[data-type="button"][data-full="true"] a {
+  display: block;
+  text-align: center;
+}
+
+/* Colored boxes */
+.post-body div[data-type="callout"] {
+  position: relative;
+  border-radius: 16px;
+  padding: 1.3em 1.5em;
+  margin: 1.8em 0;
+}
+.post-body div[data-type="callout"] > * + * {
+  margin-top: 0.8em;
+}
+.post-body div[data-type="callout"] > :first-child {
+  margin-top: 0;
+}
+.post-body div[data-type="callout"][data-emoji] {
+  padding-left: 3.4em;
+}
+.post-body div[data-type="callout"][data-emoji]::before {
+  content: attr(data-emoji);
+  position: absolute;
+  left: 1.1em;
+  top: 1.15em;
+  font-size: 1.3em;
+  line-height: 1.2;
+}
+.post-body div[data-type="callout"][data-tone="dark"],
+.post-body div[data-type="callout"][data-tone="dark"] :is(h2, h3, h4, strong, b, p, li, a, blockquote) {
+  color: #fff;
+}
+.post-body div[data-type="callout"] div[data-type="button"] {
+  margin: 1em 0 0.2em;
+}
+
+/* Tables */
+.post-body .tableWrapper {
+  overflow-x: auto;
+  margin: 1.6em 0;
+}
+.post-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+.post-body th,
+.post-body td {
+  border: 1px solid var(--line);
+  padding: 0.6em 0.8em;
+  text-align: left;
+  vertical-align: top;
+  min-width: 80px;
+}
+.post-body th {
+  background: rgba(14, 43, 64, 0.06);
+  color: var(--ink);
+  font-weight: 650;
+}
+.post-body td > p,
+.post-body th > p {
+  margin: 0;
+}
+
+/* Maps */
+.post-body div[data-type="map"] {
+  margin: 1.6em 0;
+}
+.post-body div[data-type="map"] iframe {
+  display: block;
+  width: 100%;
+  height: 360px;
+  border: 0;
+  border-radius: 12px;
+}
+
+/* Checklists */
+.post-body ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.2em;
+}
+.post-body ul[data-type="taskList"] > li,
+.post-body li[data-type="taskItem"] {
+  display: flex;
+  gap: 0.6em;
+  align-items: flex-start;
+}
+.post-body ul[data-type="taskList"] > li > label {
+  flex: none;
+  margin-top: 0.35em;
+}
+.post-body ul[data-type="taskList"] input {
+  width: 1.05em;
+  height: 1.05em;
+  accent-color: var(--sea);
+}
+.post-body ul[data-type="taskList"] > li > div {
+  flex: 1;
+}
+.post-body ul[data-type="taskList"] > li[data-checked="true"] > div {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.post-body div[data-youtube-video] {
+  margin: 1.6em 0;
+}
+.post-body div[data-youtube-video] iframe {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+}
+@media (max-width: 640px) {
+  .post-body figure[data-align]:not([data-size="full"]) {
+    float: none;
+    margin: 1.4em auto;
+  }
+  .post-body figure[data-size="small"],
+  .post-body figure[data-size="medium"] {
+    width: 70%;
+  }
+  .post-body figure[data-size="large"] {
+    width: 100%;
+  }
+  .post-body div[data-type="callout"] {
+    padding: 1.1em 1.15em;
+  }
+  .post-body div[data-type="callout"][data-emoji] {
+    padding-left: 2.9em;
+  }
+  .post-body div[data-type="callout"][data-emoji]::before {
+    left: 0.85em;
+    top: 0.95em;
+  }
+  .post-body div[data-type="map"] iframe {
+    height: 260px;
+  }
+  .post-body img[data-align="left"],
+  .post-body img[data-align="right"] {
+    float: none;
+    margin: 1.4em auto;
+  }
+  .post-body img[data-size="small"],
+  .post-body img[data-size="medium"] {
+    width: 70%;
+  }
+  .post-body img[data-size="large"] {
+    width: 100%;
+  }
+}

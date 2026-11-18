@@ -13,6 +13,7 @@ const links = [
   { href: "/#reviews", label: "Reviews" },
   { href: "/areas", label: "Neighborhoods" },
   { href: "/guides", label: "Guides" },
+  { href: "/blog", label: "Blog" },
 ];
 
 export default function NavBar() {
@@ -66,7 +67,7 @@ export default function NavBar() {
           </a>
         </div>
 
-        <nav className="hidden lg:flex items-center gap-8" aria-label="Main">
+        <nav className="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Main">
           {links.map((link) => (
             <Link
               key={link.href}

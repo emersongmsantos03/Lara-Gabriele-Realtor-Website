@@ -45,3 +45,7 @@ next-env.d.ts
 
 # keep the env template
 !.env.local.example
+
+# admin: local dev data and uploaded images (production uses Redis + Vercel Blob)
+/.data/
+/public/uploads/
