@@ -150,9 +150,11 @@ function cleanTags(v: unknown): string[] {
   return out.slice(0, 8);
 }
 
-/** Only images we host (Vercel Blob) or local dev uploads can be covers. */
+/** Only images we host (Vercel Blob, the main site's /images/blog/) or local dev uploads can be covers. */
 function cleanCover(u: string) {
   if (/^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i.test(u)) return u;
+  if (/^https:\/\/(www\.)?pacificfriendlyrealty\.com\/images\/blog\/[\w.-]+$/.test(u)) return u;
+  if (process.env.NODE_ENV !== "production" && /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?\/images\/blog\/[\w.-]+$/.test(u)) return u;
   if (process.env.NODE_ENV !== "production" && /^(http:\/\/(localhost|127\.0\.0\.1)(:\d+)?)?\/uploads\//.test(u)) return u;
   return "";
 }

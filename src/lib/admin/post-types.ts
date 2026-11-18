@@ -78,9 +78,11 @@ export function slugify(s: string) {
   );
 }
 
-/** Local-dev uploads are saved with a full localhost address; serve them as a path. */
+/** Our own images (local-dev uploads, /images/blog/) are saved with a full address; serve them as a path. */
 export function imageSrc(url: string) {
-  return url.replace(/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(?=\/uploads\/)/, "");
+  return url
+    .replace(/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?(?=\/(uploads|images)\/)/, "")
+    .replace(/^https:\/\/(www\.)?pacificfriendlyrealty\.com(?=\/images\/)/, "");
 }
 
 export function formatPostDate(iso: string | null) {

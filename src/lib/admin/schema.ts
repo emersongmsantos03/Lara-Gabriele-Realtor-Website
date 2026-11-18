@@ -2,6 +2,7 @@ import "server-only";
 import { promises as fs } from "fs";
 import path from "path";
 import type { Q } from "./db";
+import { STARTER_POSTS } from "./starter-posts";
 
 // Database schema, as ordered migrations. Never edit a migration that has
 // shipped; add a new one instead.
@@ -136,7 +137,27 @@ export const MIGRATIONS: Migration[] = [
     up: [],
     run: importLegacyKv,
   },
+  {
+    version: 3,
+    name: "move the hyperlocal sites' starter articles into the admin",
+    up: [],
+    run: importStarterPosts,
+  },
 ];
+
+/** The 4 articles that used to be hard-coded in the static sites, as normal published posts. */
+async function importStarterPosts(q: Q) {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://www.pacificfriendlyrealty.com").replace(/\/$/, "");
+  for (const p of STARTER_POSTS) {
+    await q(
+      `INSERT INTO posts (slug, title, excerpt, excerpt_auto, cover_image, cover_alt, content_html, sites, status, publish_at,
+         tags, author, updated_by, created_at, updated_at)
+       VALUES ($1,$2,$3,false,$4,$5,$6,$7,'published',$8,$9,'Lara Gabriele','Lara Gabriele',$8,$8)
+       ON CONFLICT (slug) DO NOTHING`,
+      [p.slug, p.title, p.excerpt, `${base}/images/blog/${p.image}`, p.imageAlt, p.contentHtml, [p.site], p.publishAt, p.tags],
+    );
+  }
+}
 
 /** One-time copy of .data/store.json (the previous local store) into Postgres. */
 async function importLegacyKv(q: Q) {

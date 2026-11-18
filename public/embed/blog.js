@@ -5,7 +5,9 @@
  *   <script src="https://www.pacificfriendlyrealty.com/embed/blog.js" data-site="santafe" defer></script>
  *
  * - <div data-pfr-posts data-prefix="blog/" data-limit="3"> gets post cards (added
- *   in front of any cards already in the page).
+ *   in front of any cards already in the page). With data-empty="hide" the
+ *   surrounding <section> stays hidden when there are no posts; with
+ *   data-empty-text="..." that message is shown instead.
  * - <main id="pfr-post"> on blog/post.html renders the post named by ?slug=.
  */
 (function () {
@@ -71,10 +73,23 @@
         var cards = el.querySelectorAll(".post-card");
         if (limit) for (var i = limit; i < cards.length; i++) cards[i].remove();
         if (el.querySelectorAll(".post-card").length >= 3) el.classList.add("three");
+        showEmpty(el);
       });
       return posts;
     });
-    listReq.catch(function () {});
+    listReq.catch(function () {
+      lists.forEach(showEmpty);
+    });
+  }
+
+  function showEmpty(el) {
+    if (el.querySelector(".post-card")) return;
+    var sec = el.closest("section");
+    if (el.getAttribute("data-empty") === "hide" && sec) sec.style.display = "none";
+    var text = el.getAttribute("data-empty-text");
+    if (text && !el.querySelector(".pfr-empty")) {
+      el.insertAdjacentHTML("afterend", '<p class="pfr-empty" style="color:var(--muted)">' + esc(text) + "</p>");
+    }
   }
 
   // ---------- Single post ----------
@@ -202,7 +217,9 @@
       return get("").then(function (list) {
         var others = (list.posts || []).filter(function (q) { return q.slug !== p.slug; }).slice(0, 2);
         var more = $("pfr-more");
+        if (more && !others.length && !more.querySelector(".post-card")) more.style.display = "none";
         if (more && others.length) {
+          more.style.display = "";
           more.querySelector(".posts").insertAdjacentHTML("afterbegin", others.map(function (q) { return card(q, ""); }).join(""));
           var cards = more.querySelectorAll(".post-card");
           for (var i = 2; i < cards.length; i++) cards[i].remove();
