@@ -14,8 +14,6 @@ const links = [
   { href: "/areas", label: "Neighborhoods" },
   { href: "/guides", label: "Guides" },
   { href: "/blog", label: "Blog" },
-  // Seasonal: remove after the holidays.
-  { href: "/pie-raffle", label: "🥧 Pie Raffle", wide: true },
 ];
 
 export default function NavBar() {
@@ -74,7 +72,7 @@ export default function NavBar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`${"wide" in link ? "hidden xl:inline" : ""} text-sm whitespace-nowrap transition-colors ${
+              className={`text-sm transition-colors ${
                 solid ? "text-ink-soft hover:text-ink" : "text-cream/85 hover:text-cream"
               }`}
             >

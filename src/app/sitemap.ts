@@ -44,12 +44,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     })),
     {
-      url: `${site.url}/pie-raffle`,
-      lastModified,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    },
-    {
       url: `${site.url}/blog`,
       lastModified,
       changeFrequency: "weekly",
