@@ -246,7 +246,8 @@ export type AuditAction =
   | "login.success" | "login.failed" | "login.locked" | "login.mfa_failed" | "login.recovery_code" | "logout"
   | "password.changed" | "mfa.enabled" | "mfa.disabled" | "mfa.recovery_regenerated" | "sessions.revoked"
   | "post.created" | "post.updated" | "post.published" | "post.scheduled" | "post.unpublished"
-  | "post.trashed" | "post.restored" | "post.deleted" | "image.uploaded" | "data.exported";
+  | "post.trashed" | "post.restored" | "post.deleted" | "image.uploaded" | "data.exported"
+  | "raffle.drawn" | "raffle.unmarked" | "raffle.exported";
 
 export async function audit(
   action: AuditAction,

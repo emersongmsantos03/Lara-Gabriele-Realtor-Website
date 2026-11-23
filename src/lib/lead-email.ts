@@ -4,7 +4,7 @@
 
 import { site } from "./site";
 
-export type LeadKind = "contact" | "valuation" | "subscribe";
+export type LeadKind = "contact" | "valuation" | "subscribe" | "raffle";
 
 export type Lead = {
   kind: LeadKind;
@@ -16,6 +16,9 @@ export type Lead = {
   address?: string;
   /** Neighborhood page the form was on, e.g. "Poway". */
   area?: string;
+  /** Pie raffle: the pie they'd like, and whether they opted in to market updates. */
+  pie?: string;
+  marketingOk?: boolean;
 };
 
 export type LeadContext = {
@@ -70,6 +73,12 @@ const kinds: Record<LeadKind, { label: string; emoji: string; color: string; nex
     color: c.ink,
     next: "Add them to the new-listings list in Flodesk.",
   },
+  raffle: {
+    label: "Pie raffle entry",
+    emoji: "🥧",
+    color: c.gold,
+    next: "Nothing to do yet — draw the 3 winners in /admin/raffle on Dec 14. If they opted in, add them to Flodesk.",
+  },
 };
 
 function kindFor(lead: Lead) {
@@ -106,6 +115,7 @@ export function leadSubject(lead: Lead) {
   const k = kindFor(lead);
   if (lead.kind === "valuation") return `${k.emoji} ${k.label}: ${lead.address}`;
   if (lead.kind === "subscribe") return `${k.emoji} ${k.label}: ${lead.email}`;
+  if (lead.kind === "raffle") return `${k.emoji} ${k.label}: ${lead.name}${lead.area ? ` — ${lead.area}` : ""}`;
   const extras = [lead.intent, lead.area].filter(Boolean).join(" · ");
   return `${k.emoji} ${k.label} from ${lead.name}${extras ? ` — ${extras}` : ""}`;
 }
@@ -134,7 +144,11 @@ export function leadHtml(lead: Lead, ctx: LeadContext) {
   const who = lead.name?.trim() || lead.email;
   const headline = lead.kind === "valuation" && lead.address ? lead.address : who;
   const replySubject = encodeURIComponent(
-    lead.kind === "valuation" ? `Your home value — ${lead.address}` : "Thanks for reaching out — Lara Gabriele"
+    lead.kind === "valuation"
+      ? `Your home value — ${lead.address}`
+      : lead.kind === "raffle"
+        ? "You're in the Christmas pie raffle!"
+        : "Thanks for reaching out — Lara Gabriele"
   );
 
   const actions = [
@@ -161,6 +175,8 @@ export function leadHtml(lead: Lead, ctx: LeadContext) {
         )
       : "",
     lead.area ? row("Neighborhood", esc(lead.area)) : "",
+    lead.pie ? row("Pie pick", esc(lead.pie)) : "",
+    lead.kind === "raffle" ? row("Market updates", lead.marketingOk ? "Yes — opted in" : "No") : "",
   ].join("");
 
   const message = lead.message?.trim()
@@ -246,6 +262,8 @@ export function leadText(lead: Lead, ctx: LeadContext) {
       lead.intent && `Looking to: ${lead.intent}`,
       lead.address && `Property: ${lead.address}`,
       lead.area && `Neighborhood: ${lead.area}`,
+      lead.pie && `Pie pick: ${lead.pie}`,
+      lead.kind === "raffle" ? `Market updates: ${lead.marketingOk ? "yes" : "no"}` : undefined,
     ]),
     lead.message?.trim() && `Message:\n${lead.message.trim()}`,
     `Next step: ${k.next}`,

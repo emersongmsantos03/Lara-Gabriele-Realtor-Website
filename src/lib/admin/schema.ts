@@ -143,6 +143,27 @@ export const MIGRATIONS: Migration[] = [
     up: [],
     run: importStarterPosts,
   },
+  {
+    version: 4,
+    name: "giveaway entries (Christmas pie raffle)",
+    up: [
+      `CREATE TABLE raffle_entries (
+        id bigserial PRIMARY KEY,
+        raffle text NOT NULL CHECK (length(raffle) <= 40),
+        name text NOT NULL CHECK (length(name) BETWEEN 1 AND 120),
+        email text NOT NULL CHECK (email = lower(email) AND length(email) <= 254),
+        phone text NOT NULL DEFAULT '' CHECK (length(phone) <= 30),
+        area text NOT NULL DEFAULT '' CHECK (length(area) <= 80),
+        pie text NOT NULL DEFAULT '' CHECK (length(pie) <= 40),
+        marketing_ok boolean NOT NULL DEFAULT false,
+        created_at timestamptz NOT NULL DEFAULT now(),
+        ip text,
+        winner_at timestamptz,
+        UNIQUE (raffle, email)
+      )`,
+      `CREATE INDEX raffle_entries_raffle_idx ON raffle_entries (raffle, created_at DESC)`,
+    ],
+  },
 ];
 
 /** The 4 articles that used to be hard-coded in the static sites, as normal published posts. */

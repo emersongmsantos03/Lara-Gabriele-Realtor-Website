@@ -120,3 +120,30 @@ body {
   border-top-color: var(--ink);
 }
 
+
+/* Pie raffle landing page (/pie-raffle) */
+.raffle-snow {
+  background-image:
+    radial-gradient(2px 2px at 20px 30px, rgba(248, 244, 236, 0.8), transparent 60%),
+    radial-gradient(1.5px 1.5px at 120px 80px, rgba(248, 244, 236, 0.6), transparent 60%),
+    radial-gradient(2.5px 2.5px at 200px 160px, rgba(248, 244, 236, 0.5), transparent 60%),
+    radial-gradient(1.5px 1.5px at 60px 200px, rgba(248, 244, 236, 0.7), transparent 60%),
+    radial-gradient(2px 2px at 260px 40px, rgba(248, 244, 236, 0.5), transparent 60%);
+  background-size: 300px 240px;
+  animation: raffle-snow 24s linear infinite;
+  mask-image: linear-gradient(to bottom, black 40%, transparent);
+}
+@keyframes raffle-snow {
+  from { background-position: 0 0; }
+  to { background-position: 60px 480px; }
+}
+.raffle-float {
+  animation: raffle-float 6s ease-in-out infinite;
+}
+@keyframes raffle-float {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .raffle-snow, .raffle-float { animation: none; }
+}
