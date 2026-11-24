@@ -18,7 +18,7 @@ const inter = Inter({
 
 const title = "San Marcos & Poway Realtor | Lara Gabriele — San Diego Real Estate Agent";
 const description =
-  "Lara Gabriele is a San Marcos REALTOR® and former senior mortgage underwriter helping buyers and sellers in San Marcos, Poway and across San Diego County — offers and financing that hold up. SRES® and luxury specialist. Free home valuations.";
+  "San Marcos & Poway REALTOR® and former mortgage underwriter Lara Gabriele helps San Diego County buyers and sellers. Free home valuations.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { recordLead } from "@/lib/admin/analytics";
+import { ALLOWED_ORIGINS, isSiteId, SITES, type SiteId } from "@/lib/admin/sites";
 import { memoryLimit, rateLimit } from "@/lib/admin/security";
 import { leadHtml, leadSubject, leadText, type Lead, type LeadContext } from "@/lib/lead-email";
 
@@ -35,7 +36,31 @@ function visitorLocation(request: NextRequest) {
   return parts.length ? parts.join(", ") : undefined;
 }
 
+// The two neighborhood sites (santafehillssd.com, lomasverdesestates.com) post their
+// forms here too, so every lead lands in the same inboxes and admin dashboard.
+function cors(request: NextRequest): Record<string, string> {
+  const origin = request.headers.get("origin");
+  if (!origin || !ALLOWED_ORIGINS.includes(origin)) return {};
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
+  };
+}
+
+export function OPTIONS(request: NextRequest) {
+  return new NextResponse(null, { status: 204, headers: cors(request) });
+}
+
 export async function POST(request: NextRequest) {
+  const res = await handle(request);
+  for (const [k, v] of Object.entries(cors(request))) res.headers.set(k, v);
+  return res;
+}
+
+async function handle(request: NextRequest) {
   // Anti-spam: 5 messages per 10 minutes per network. Never blocks a real lead
   // if the database is unreachable (fails open).
   const ip = request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "local";
@@ -57,10 +82,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, phone, message, address, type, intent, area } = (body ?? {}) as Record<
+  const { name, email, phone, message, address, type, intent, area, site: siteIn, company } = (body ?? {}) as Record<
     string,
     unknown
   >;
+
+  // Hidden "company" field: people never see it, spam bots fill it in. Pretend it worked.
+  if (typeof company === "string" && company.trim()) return NextResponse.json({ ok: true });
+
+  // Which website the form was on (only the neighborhood sites send this).
+  const site: SiteId = isSiteId(siteIn) ? siteIn : "pacific";
 
   if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json({ error: "A valid email is required." }, { status: 400 });
@@ -106,6 +137,7 @@ export async function POST(request: NextRequest) {
     location: visitorLocation(request),
     device: ua ? (/Mobi|Android|iPhone/i.test(ua) ? "Mobile" : "Desktop") : undefined,
     receivedAt: new Date(),
+    sourceDomain: SITES[site].domain,
   };
 
   try {
@@ -141,7 +173,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Counted in the /admin dashboard. Never let analytics break a lead.
-    await recordLead("pacific").catch((e) => console.error("Lead count failed:", e));
+    await recordLead(site).catch((e) => console.error("Lead count failed:", e));
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Failed to send email:", err);

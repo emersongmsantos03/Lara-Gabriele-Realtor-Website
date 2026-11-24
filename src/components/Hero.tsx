@@ -17,7 +17,7 @@ export default function Hero() {
         muted
         loop
         playsInline
-        poster="/images/hero-poster.jpg"
+        aria-hidden="true"
         className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
       >
         {/* Desktop only: keeps the 8.5 MB video off mobile data plans. */}

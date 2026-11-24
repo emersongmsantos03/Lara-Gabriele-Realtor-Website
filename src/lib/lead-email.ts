@@ -25,6 +25,8 @@ export type LeadContext = {
   location?: string;
   device?: "Mobile" | "Desktop";
   receivedAt: Date;
+  /** Website the form was on, e.g. "santafehillssd.com". */
+  sourceDomain?: string;
 };
 
 const c = {
@@ -183,7 +185,7 @@ export function leadHtml(lead: Lead, ctx: LeadContext) {
   return `<!doctype html>
 <html>
 <body style="margin:0;padding:0;background:${c.creamDeep};">
-  <span style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(k.label)} from ${esc(who)} via pacificfriendlyrealty.com</span>
+  <span style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(k.label)} from ${esc(who)} via ${esc(ctx.sourceDomain ?? "pacificfriendlyrealty.com")}</span>
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${c.creamDeep};">
     <tr><td align="center" style="padding:28px 12px;">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:${c.white};border-radius:16px;overflow:hidden;">
@@ -191,7 +193,7 @@ export function leadHtml(lead: Lead, ctx: LeadContext) {
         <tr><td style="background:${c.ink};padding:22px 32px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
             <td style="font-family:${serif};font-size:18px;color:${c.cream};">Pacific Friendly Realty</td>
-            <td align="right" style="font-family:${sans};font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:${c.goldLight};">Website lead</td>
+            <td align="right" style="font-family:${sans};font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:${c.goldLight};">${esc(ctx.sourceDomain && ctx.sourceDomain !== "pacificfriendlyrealty.com" ? ctx.sourceDomain : "Website lead")}</td>
           </tr></table>
         </td></tr>
 
@@ -238,7 +240,7 @@ export function leadText(lead: Lead, ctx: LeadContext) {
   const k = kindFor(lead);
   const block = (lines: (string | undefined)[]) => lines.filter(Boolean).join("\n");
   return [
-    `${k.label.toUpperCase()} — ${site.url.replace(/^https?:\/\//, "")}`,
+    `${k.label.toUpperCase()} — ${ctx.sourceDomain ?? site.url.replace(/^https?:\/\//, "")}`,
     block([
       lead.name && `Name: ${lead.name}`,
       `Email: ${lead.email}`,

@@ -30,14 +30,15 @@ export default async function OffMarket() {
               <div>
                 <p className="inline-flex items-center gap-2 text-gold-light text-xs tracking-[0.25em] uppercase mb-3">
                   <Lock size={12} />
-                  Wispr Properties
+                  Wispr with Lara
                 </p>
                 <h2 className="font-display text-3xl md:text-4xl leading-tight">
                   Off-market homes, shared privately.
                 </h2>
                 <p className="mt-3 text-cream/70 leading-relaxed max-w-xl">
                   Homes whose owners sell quietly &mdash; not on the MLS, Zillow
-                  or any public site. The only way to see them is through me.
+                  or any public site. The only way to see them is through me, or by
+                  asking my AI assistant, any time.
                 </p>
 
                 {listings.length > 0 && (
@@ -69,6 +70,14 @@ export default async function OffMarket() {
                   Request private access
                   <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5" />
                 </IntentLink>
+                <a
+                  href="https://wisprwithlara.com"
+                  target="_blank"
+                  rel="noopener"
+                  className="inline-flex items-center gap-2 rounded-full border border-cream/30 text-cream text-sm font-medium px-7 py-3 hover:bg-cream/10 transition-colors"
+                >
+                  Chat with my AI assistant
+                </a>
                 <IntentLink
                   intent="Sell"
                   message="I'm interested in selling my home privately through Wispr Properties."
