@@ -40,6 +40,9 @@ const ACTIONS: Record<string, string> = {
   "post.deleted": "Deleted post forever",
   "image.uploaded": "Uploaded a photo",
   "data.exported": "Downloaded a backup",
+  "sale.created": "Added a recent sale",
+  "sale.updated": "Updated a recent sale",
+  "sale.deleted": "Removed a recent sale",
 };
 const ALERT = new Set(["login.failed", "login.locked", "login.mfa_failed", "mfa.disabled", "login.recovery_code"]);
 

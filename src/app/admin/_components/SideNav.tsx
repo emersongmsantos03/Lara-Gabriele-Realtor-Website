@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, BookOpenCheck, ExternalLink, FileText, LogOut, PenSquare, ShieldCheck } from "lucide-react";
+import { BarChart3, BookOpenCheck, ExternalLink, FileText, Home, LogOut, PenSquare, ShieldCheck } from "lucide-react";
 import { SITE_LIST } from "@/lib/admin/sites";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", icon: BarChart3, exact: true },
   { href: "/admin/posts", label: "Blog posts", icon: FileText },
   { href: "/admin/blog-stats", label: "Blog stats", icon: BookOpenCheck },
+  { href: "/admin/sales", label: "Recent sales", icon: Home },
   { href: "/admin/account", label: "Security", icon: ShieldCheck },
 ];
 

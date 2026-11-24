@@ -164,6 +164,30 @@ export const MIGRATIONS: Migration[] = [
       `CREATE INDEX raffle_entries_raffle_idx ON raffle_entries (raffle, created_at DESC)`,
     ],
   },
+  {
+    version: 5,
+    name: "recent sales shown on the neighborhood sites",
+    up: [
+      `CREATE TABLE sales (
+        id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+        site text NOT NULL CHECK (site IN ('santafe','lomasverdes')),
+        address text NOT NULL CHECK (length(address) BETWEEN 1 AND 160),
+        price int NOT NULL CHECK (price > 0),
+        sold_on date NOT NULL,
+        beds real CHECK (beds IS NULL OR (beds >= 0 AND beds < 100)),
+        baths real CHECK (baths IS NULL OR (baths >= 0 AND baths < 100)),
+        sqft int CHECK (sqft IS NULL OR (sqft > 0 AND sqft < 100000)),
+        photo text NOT NULL DEFAULT '' CHECK (length(photo) <= 1000),
+        represented text NOT NULL DEFAULT '' CHECK (represented IN ('','seller','buyer','both')),
+        note text NOT NULL DEFAULT '' CHECK (length(note) <= 160),
+        created_by text NOT NULL,
+        updated_by text NOT NULL,
+        created_at timestamptz NOT NULL DEFAULT now(),
+        updated_at timestamptz NOT NULL DEFAULT now()
+      )`,
+      `CREATE INDEX sales_site_idx ON sales (site, sold_on DESC)`,
+    ],
+  },
 ];
 
 /** The 4 articles that used to be hard-coded in the static sites, as normal published posts. */
