@@ -72,7 +72,7 @@ export default function ContactSection({ area }: { area?: string }) {
   return (
     <section id="contact" className="py-20 md:py-24 bg-ink text-cream">
       <div className="mx-auto max-w-6xl px-6 lg:px-10 grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-        <Reveal className="lg:col-span-5">
+        <Reveal className="lg:col-span-5 min-w-0">
           <div className="flex items-center gap-4">
             <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-gold-light/60">
               <Image
@@ -113,7 +113,7 @@ export default function ContactSection({ area }: { area?: string }) {
           </div>
         </Reveal>
 
-        <Reveal delay={100} className="lg:col-span-7">
+        <Reveal delay={100} className="lg:col-span-7 min-w-0">
           {status === "success" ? (
             <div className="rounded-3xl bg-cream text-ink p-10 md:p-12 text-center">
               <div className="mx-auto w-14 h-14 rounded-full bg-sea/15 flex items-center justify-center">
@@ -174,7 +174,7 @@ export default function ContactSection({ area }: { area?: string }) {
                       onChange={(e) => setPhone(formatPhone(e.target.value))}
                       pattern="\(\d{3}\) \d{3}-\d{4}|\+.{6,}"
                       title="Enter a 10-digit US number, or start with + for international"
-                      className="min-w-0 flex-1 bg-transparent px-3 py-3.5 text-sm focus:outline-none"
+                      className="w-0 min-w-0 flex-1 bg-transparent px-3 py-3.5 text-sm focus:outline-none"
                     />
                   </div>
                 </div>

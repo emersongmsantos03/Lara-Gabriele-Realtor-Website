@@ -117,7 +117,7 @@ function Performance({ slug }: { slug: string }) {
         {tiles.map(({ icon: Icon, label, n }) => (
           <div key={label} className="rounded-xl bg-[var(--a-bg)] p-3">
             <Icon size={15} className="text-[var(--a-muted)]" />
-            <p className="mt-1 text-xl font-semibold tabular-nums">{n.toLocaleString()}</p>
+            <p className="mt-1 text-xl font-semibold tabular-nums">{n.toLocaleString("en-US")}</p>
             <p className="text-[11px] text-[var(--a-muted)] leading-tight">{label}</p>
           </div>
         ))}
@@ -254,7 +254,7 @@ export default function SettingsPanel({
       </Section>
 
       <p className="mt-6 text-xs text-[var(--a-faint)]">
-        {words.toLocaleString()} words · {Math.max(1, Math.round(words / 220))} min read
+        {words.toLocaleString("en-US")} words · {Math.max(1, Math.round(words / 220))} min read
         {post ? ` · Last edited by ${post.updatedBy}` : ""}
       </p>
     </div>

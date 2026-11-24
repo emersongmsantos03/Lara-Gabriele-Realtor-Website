@@ -38,7 +38,7 @@ export default function TrafficChart({
   useEffect(() => {
     const el = box.current;
     if (!el) return;
-    const ro = new ResizeObserver(([e]) => setWidth(Math.max(280, e.contentRect.width)));
+    const ro = new ResizeObserver(([e]) => setWidth(Math.max(200, Math.floor(e.contentRect.width))));
     ro.observe(el);
     return () => ro.disconnect();
   }, []);
@@ -128,7 +128,7 @@ export default function TrafficChart({
           </table>
         </div>
       ) : (
-        <div ref={box} className="relative mt-3">
+        <div ref={box} className="relative mt-3 min-w-0 overflow-hidden">
           {total === 0 && (
             <p className="absolute inset-0 flex items-center justify-center text-sm text-[var(--a-faint)] pointer-events-none">
               No visits recorded in this period yet.

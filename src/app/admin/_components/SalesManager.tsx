@@ -272,18 +272,18 @@ export default function SalesManager({ initialSales }: { initialSales: Sale[] })
         ) : (
           <ul className="divide-y divide-[var(--a-line)]">
             {shown.map((s, i) => (
-              <li key={s.id} className={`flex flex-wrap sm:flex-nowrap items-center gap-4 p-3 sm:p-4 ${i >= SALES_SHOWN ? "opacity-55" : ""}`}>
+              <li key={s.id} className={`grid grid-cols-[6rem_1fr] items-center gap-x-4 gap-y-3 p-3 sm:flex sm:p-4 ${i >= SALES_SHOWN ? "opacity-55" : ""}`}>
                 {s.photo ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img src={s.photo} alt="" className="h-16 w-24 rounded-lg object-cover shrink-0 border border-[var(--a-line)]" />
                 ) : (
                   <div className="h-16 w-24 rounded-lg shrink-0 bg-gradient-to-br from-[#123A57] to-[#1E9BA8]" />
                 )}
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 sm:flex-1">
                   <p className="font-medium truncate">{s.address}</p>
                   <p className="text-sm text-[var(--a-muted)]">
                     {money(s.price)} · sold {day(s.soldOn)}
-                    {[s.beds != null && `${s.beds} bd`, s.baths != null && `${s.baths} ba`, s.sqft && `${s.sqft.toLocaleString()} sq ft`]
+                    {[s.beds != null && `${s.beds} bd`, s.baths != null && `${s.baths} ba`, s.sqft && `${s.sqft.toLocaleString("en-US")} sq ft`]
                       .filter(Boolean)
                       .map((x) => ` · ${x}`)}
                   </p>
@@ -293,7 +293,7 @@ export default function SalesManager({ initialSales }: { initialSales: Sale[] })
                     {i >= SALES_SHOWN && " · not shown (only the latest " + SALES_SHOWN + " appear)"}
                   </p>
                 </div>
-                <div className="flex gap-2 ml-auto">
+                <div className="col-span-2 flex justify-end gap-2 sm:ml-auto">
                   <button className="a-btn a-btn-ghost h-9" onClick={() => (setError(""), setEditing({ id: s.id, draft: toDraft(s) }), window.scrollTo({ top: 0, behavior: "smooth" }))}>
                     <Pencil size={15} /> Edit
                   </button>

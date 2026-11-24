@@ -238,7 +238,7 @@ export default function PostsList({
                       <span className="text-[var(--a-muted)]">{when(p)}</span>
                       {s === "published" && (
                         <span className="inline-flex items-center gap-1 text-[var(--a-muted)]" title="Views on all sites, all time">
-                          <Eye size={14} /> {(views[p.slug] ?? 0).toLocaleString()}
+                          <Eye size={14} /> {(views[p.slug] ?? 0).toLocaleString("en-US")}
                         </span>
                       )}
                       {p.featured && (
