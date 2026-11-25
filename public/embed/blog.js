@@ -127,7 +127,19 @@
       setMeta('link[rel="canonical"]', "href", p.canonical);
       setMeta('meta[property="og:url"]', "content", p.canonical);
       if (p.coverImage) {
-        $("pfr-hero").style.backgroundImage = cssUrl(p.coverImage);
+        // Full cover photo under the title band (never cropped behind text:
+        // many covers have words baked into the image).
+        var hero = $("pfr-hero");
+        var fig = document.createElement("figure");
+        fig.className = "pfr-cover";
+        var im = document.createElement("img");
+        im.src = p.coverImage;
+        im.alt = p.coverAlt || "";
+        im.decoding = "async";
+        im.setAttribute("fetchpriority", "high");
+        fig.appendChild(im);
+        hero.classList.add("has-cover");
+        hero.insertAdjacentElement("afterend", fig);
         var og = document.createElement("meta");
         og.setAttribute("property", "og:image");
         og.content = p.coverImage;
