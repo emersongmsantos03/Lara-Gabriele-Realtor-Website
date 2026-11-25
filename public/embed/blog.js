@@ -92,6 +92,25 @@
     }
   }
 
+  var ICONS = {
+    fb: "M13.5 21v-7.5H16l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.2H8v3h2.4V21z",
+    x: "M17.8 3h3.1l-6.8 7.8L22 21h-6.2l-4.9-6.4L5.3 21H2.2l7.3-8.3L2 3h6.4l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.6z",
+    li: "M6.9 8.8H3.6V20h3.3zM5.2 3.5a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zM20.4 13.6c0-3-.6-5.1-4.1-5.1-1.7 0-2.8.9-3.2 1.8h-.1V8.8H9.8V20h3.3v-5.5c0-1.5.3-2.9 2.1-2.9s1.8 1.7 1.8 3V20h3.4z",
+    mail: "M3 5h18a1 1 0 011 1v12a1 1 0 01-1 1H3a1 1 0 01-1-1V6a1 1 0 011-1zm1 2.6V17h16V7.6l-8 5.3zM5.8 7l6.2 4.1L18.2 7z",
+    link: "M8.8 15.2a1 1 0 010-1.4l5-5a1 1 0 111.4 1.4l-5 5a1 1 0 01-1.4 0zM7.8 20.2A4 4 0 015 13.3l2.5-2.5a1 1 0 011.4 1.4l-2.5 2.5a2 2 0 002.8 2.8l2.5-2.5a1 1 0 011.4 1.4l-2.5 2.5a4 4 0 01-2.8 1.3zM16 13.6a1 1 0 01-.7-1.7l2.5-2.5a2 2 0 00-2.8-2.8l-2.5 2.5a1 1 0 01-1.4-1.4l2.5-2.5a4 4 0 015.6 5.6l-2.5 2.5a1 1 0 01-.7.3z",
+    check: "M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6 11-11-1.4-1.4z",
+  };
+  function svg(d) {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>';
+  }
+  function icon(tag, net, href, d) {
+    var label = net === "Copy link" ? "Copy link" : "Share on " + net;
+    if (net === "Email") label = "Share by email";
+    return tag === "a"
+      ? '<a data-net="' + net + '" href="' + href + '"' + (net === "Email" ? "" : ' target="_blank" rel="noopener"') + ' aria-label="' + label + '" title="' + label + '">' + svg(d) + "</a>"
+      : '<button type="button" data-net="' + net + '" aria-label="' + label + '" title="' + label + '">' + svg(d) + "</button>";
+  }
+
   // ---------- Single post ----------
   var root = document.getElementById("pfr-post");
   if (!root) return;
@@ -101,6 +120,9 @@
   function notFound() {
     $("pfr-title").textContent = "Article not found";
     $("pfr-date").textContent = "";
+    if ($("pfr-cover")) $("pfr-cover").hidden = true;
+    if ($("pfr-excerpt")) $("pfr-excerpt").hidden = true;
+    if ($("pfr-share")) $("pfr-share").innerHTML = "";
     $("pfr-body").innerHTML = '<p>This article may have moved. <a href="index.html">See all articles &rarr;</a></p>';
     document.title = "Article not found";
     var robots = document.createElement("meta");
@@ -127,57 +149,99 @@
       setMeta('link[rel="canonical"]', "href", p.canonical);
       setMeta('meta[property="og:url"]', "content", p.canonical);
       if (p.coverImage) {
-        // Full cover photo under the title band (never cropped behind text:
+        // Full cover photo under the title (never cropped behind text:
         // many covers have words baked into the image).
-        var hero = $("pfr-hero");
-        var fig = document.createElement("figure");
-        fig.className = "pfr-cover";
-        var im = document.createElement("img");
+        var fig = $("pfr-cover");
+        if (!fig) {
+          fig = document.createElement("figure");
+          fig.className = "pfr-cover";
+          fig.appendChild(document.createElement("img"));
+          $("pfr-hero").classList.add("has-cover");
+          $("pfr-hero").insertAdjacentElement("afterend", fig);
+        }
+        var im = fig.querySelector("img");
         im.src = p.coverImage;
         im.alt = p.coverAlt || "";
-        im.decoding = "async";
-        im.setAttribute("fetchpriority", "high");
-        fig.appendChild(im);
-        hero.classList.add("has-cover");
-        hero.insertAdjacentElement("afterend", fig);
+        fig.hidden = false;
         var og = document.createElement("meta");
         og.setAttribute("property", "og:image");
         og.content = p.coverImage;
         document.head.appendChild(og);
       }
       $("pfr-title").textContent = p.title;
-      $("pfr-date").textContent = fmt(p.publishAt) + " · " + p.readingMinutes + " min read";
+      var editorial = !!$("pfr-excerpt"); // newer post.html layout
+      $("pfr-date").textContent = (editorial ? "Published " : "") + fmt(p.publishAt) + " · " + p.readingMinutes + " min read";
+
       // Post HTML is sanitized by the server when it is saved.
       var body = $("pfr-body");
       body.innerHTML = p.contentHtml;
 
+      if (editorial) {
+        // The page already shows the author, so drop a first line like "By Lara, eXp Realty".
+        var first = body.firstElementChild;
+        if (first && first.tagName === "P" && /^by\s/i.test(first.textContent.trim()) && first.textContent.length < 60) first.remove();
+        // Subtitle: only a real summary, not the auto-made start of the article.
+        var flat = function (s) { return String(s || "").toLowerCase().replace(/[^a-z0-9]/g, ""); };
+        var sub = p.seoDescription || p.excerpt || "";
+        var bodyText = flat(p.contentHtml.replace(/<[^>]+>/g, " "));
+        var head = flat(sub.replace(/(\u2026|\.\.\.)\s*$/, ""));
+        if (sub && head && bodyText.indexOf(head.slice(0, 80)) === -1) {
+          $("pfr-excerpt").textContent = sub;
+          $("pfr-excerpt").hidden = false;
+        }
+      }
+
       // Topics under the title
       if (p.tags && p.tags.length) {
-        var tags = document.createElement("div");
-        tags.className = "pfr-tags";
-        tags.innerHTML = p.tags.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("");
-        $("pfr-title").insertAdjacentElement("afterend", tags);
+        var tags = $("pfr-tags");
+        if (!tags) {
+          tags = document.createElement("div");
+          tags.className = "pfr-tags";
+          $("pfr-title").insertAdjacentElement("afterend", tags);
+        }
+        tags.innerHTML = p.tags.map(function (t) {
+          t = String(t);
+          return "<span>" + esc(editorial ? t.charAt(0).toUpperCase() + t.slice(1) : t) + "</span>";
+        }).join("");
       }
 
       // Share buttons after the article
       var url = location.href.split("#")[0];
       var u = encodeURIComponent(url), t = encodeURIComponent(p.title);
-      var share = document.createElement("div");
-      share.className = "pfr-share";
-      share.innerHTML =
-        "<b>Share</b>" +
-        '<a data-net="Facebook" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">Facebook</a>' +
-        '<a data-net="X" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=' + u + "&text=" + t + '">X</a>' +
-        '<a data-net="LinkedIn" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' + u + '">LinkedIn</a>' +
-        '<a data-net="Email" href="mailto:?subject=' + t + "&body=" + u + '">Email</a>' +
-        '<button type="button" data-net="Copy link">Copy link</button>';
-      body.insertAdjacentElement("afterend", share);
+      var share = $("pfr-share");
+      if (share) {
+        // Icon buttons next to the author
+        share.innerHTML =
+          icon("a", "Facebook", "https://www.facebook.com/sharer/sharer.php?u=" + u, ICONS.fb) +
+          icon("a", "X", "https://twitter.com/intent/tweet?url=" + u + "&text=" + t, ICONS.x) +
+          icon("a", "LinkedIn", "https://www.linkedin.com/sharing/share-offsite/?url=" + u, ICONS.li) +
+          icon("a", "Email", "mailto:?subject=" + t + "&body=" + u, ICONS.mail) +
+          icon("button", "Copy link", "", ICONS.link);
+      } else {
+        share = document.createElement("div");
+        share.className = "pfr-share";
+        share.innerHTML =
+          "<b>Share</b>" +
+          '<a data-net="Facebook" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=' + u + '">Facebook</a>' +
+          '<a data-net="X" target="_blank" rel="noopener" href="https://twitter.com/intent/tweet?url=' + u + "&text=" + t + '">X</a>' +
+          '<a data-net="LinkedIn" target="_blank" rel="noopener" href="https://www.linkedin.com/sharing/share-offsite/?url=' + u + '">LinkedIn</a>' +
+          '<a data-net="Email" href="mailto:?subject=' + t + "&body=" + u + '">Email</a>' +
+          '<button type="button" data-net="Copy link">Copy link</button>';
+        body.insertAdjacentElement("afterend", share);
+      }
       share.addEventListener("click", function (e) {
         var el = e.target.closest("[data-net]");
         if (!el) return;
         track("share", p.slug, el.getAttribute("data-net"));
         if (el.tagName === "BUTTON") {
-          try { navigator.clipboard.writeText(url); el.textContent = "Copied!"; } catch (err) {}
+          try {
+            navigator.clipboard.writeText(url);
+            if (el.querySelector("svg")) {
+              el.classList.add("ok");
+              el.innerHTML = svg(ICONS.check);
+              el.setAttribute("aria-label", "Link copied");
+            } else el.textContent = "Copied!";
+          } catch (err) {}
         }
       });
 
@@ -227,14 +291,15 @@
       document.head.appendChild(ld);
 
       return get("").then(function (list) {
-        var others = (list.posts || []).filter(function (q) { return q.slug !== p.slug; }).slice(0, 2);
+        var max = editorial ? 3 : 2;
+        var others = (list.posts || []).filter(function (q) { return q.slug !== p.slug; }).slice(0, max);
         var more = $("pfr-more");
         if (more && !others.length && !more.querySelector(".post-card")) more.style.display = "none";
         if (more && others.length) {
           more.style.display = "";
           more.querySelector(".posts").insertAdjacentHTML("afterbegin", others.map(function (q) { return card(q, ""); }).join(""));
           var cards = more.querySelectorAll(".post-card");
-          for (var i = 2; i < cards.length; i++) cards[i].remove();
+          for (var i = max; i < cards.length; i++) cards[i].remove();
         }
       });
     })
